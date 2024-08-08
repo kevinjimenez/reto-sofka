@@ -1,0 +1,51 @@
+/* input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d2d6dc;
+  border-radius: 0.25rem;
+} */
+
+.button-container {
+  display: block;
+}
+
+.button-container > .label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+
+.button-container > input {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border-radius: 0.3rem;
+  width: 90%;
+  padding: 0.625rem;
+  outline: none;
+
+}
+
+.button-container > input:focus {
+  border: solid 0.15rem #7f8c8d;
+}
+
+.invalid {
+  border: solid 0.15rem #e74c3c;
+}
+
+.valid {
+  border: solid 0.15rem #bdc3c7;
+}
+
+.error-text {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #e74c3c;
+}
+
+
+

@@ -1,0 +1,87 @@
+<app-toast [(isShow)]="toastVisible" [text]="errorMsg()" />
+<section class="table-container">
+	<div class="table-wrapper">
+		<table>
+			<thead>
+				<tr>
+					<th>
+						<span class="flex justify-center items-center w-full gap-1/2"> Logo </span>
+					</th>
+					<th>
+						<span class="flex items-center w-full gap-1/2"> Nombre del producto </span>
+					</th>
+					<th>
+						<span class="flex items-center w-full gap-1/2"> Descripción <app-alert-circle /> </span>
+					</th>
+					<th>
+						<span class="flex items-center w-full gap-1/2">
+							Fecha de liberación <app-alert-circle />
+						</span>
+					</th>
+					<th>
+						<span class="flex items-center w-full gap-1/2">
+							Fecha de reestructuración <app-alert-circle />
+						</span>
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (products().length > 0) {
+					@for (product of products(); track $index) {
+						<tr>
+							<td>
+								<span class="flex justify-center items-center w-full">
+									<app-logo [image]="product.logo" />
+								</span>
+							</td>
+							<td>{{ product.name }}</td>
+							<td>{{ product.description }}</td>
+							<td>{{ product.date_release }}</td>
+							<td>{{ product.date_revision }}</td>
+							<td>
+								<app-icon-button
+									icon="dots-vertical.svg"
+									(onClick)="showContextMenu($event, product)"
+								/>
+								<app-context-menu
+									[(isVisible)]="contextMenuVisible"
+									[(x)]="contextMenuX"
+									[(y)]="contextMenuY"
+									[(itemSelected)]="itemSelected"
+									(optionSelected)="optionSelected($event)"
+									[options]="contextMenuOptions()"
+								/>
+							</td>
+						</tr>
+					}
+				} @else {
+					sin datos
+				}
+			</tbody>
+		</table>
+	</div>
+	<footer class="table-footer">
+		<span>{{ products().length }} Resultados</span>
+		<select [(ngModel)]="selectedValue" (change)="onSelectionChange(selectedValue)">
+			<option value="5">5</option>
+			<option value="10">10</option>
+			<option value="15">15</option>
+		</select>
+	</footer>
+</section>
+
+<app-overlay [(isVisible)]="overlayVisible">
+	<section class="contend-container">
+		¿Estás seguro de eliminar el producto
+		<span style="font-weight: 600">{{ itemSelected()?.name }}</span
+		>?
+	</section>
+	<footer>
+		<hr class="w-full" />
+		<section class="flex justify-center items-center gap-1 button-container">
+			<app-button label="Cancelar" (onClick)="overlayVisible.set(false)" />
+			<app-button label="Confirmar" (onClick)="onDelete()" color="second-brand" />
+		</section>
+	</footer>
+</app-overlay>

@@ -1,0 +1,20 @@
+.toast-container {
+	position: relative;
+  cursor: pointer;
+}
+
+.toast-contend {
+	border: solid 1px #ccc;
+	position: fixed;
+	top: 0.5rem;
+	right: 0.5rem;
+	z-index: 9999;
+	padding-inline: 1rem;
+	border-radius: 0.3rem;
+	padding-bottom: 0.5rem;
+	padding-top: 0.5rem;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  background: #ced6e0;
+}
+
+

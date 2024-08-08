@@ -1,0 +1,10 @@
+@if (isVisible()) {
+	<div class="context-menu" [ngStyle]="{ 'top.px': y(), 'left.px': x() - 100 }">
+		<ng-content></ng-content>
+		<ul>
+			@for (option of options(); track $index) {
+				<li (click)="onOptionSelected(option.value)">{{ option.label }}</li>
+			}
+		</ul>
+	</div>
+}

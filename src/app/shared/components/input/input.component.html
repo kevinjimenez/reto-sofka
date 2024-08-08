@@ -1,0 +1,15 @@
+<section class="button-container">
+	@if (label()) {
+		<label [for]="label()" class="label">{{ label() }}</label>
+	}
+	<input
+		[ngClass]="{ invalid: invalidField, valid: !invalidField }"
+		[id]="label()"
+		[formControl]="control()"
+		[type]="inputType()"
+		[placeholder]="placeholder()"
+	/>
+	@if (invalidField) {
+		<p class="error-text">{{ errorMessage }}</p>
+	}
+</section>

@@ -1,0 +1,11 @@
+<main class="container">
+	<header class="flex justify-between items-center flex-row gap-1 my-1">
+		<app-input [control]="fieldSearch" />
+		<app-button label="Agregar" (onClick)="onNewProduct()" color="second-brand" />
+	</header>
+	<app-table
+		[products]="cloneProducts()"
+		(onRemoveItem)="onRemoveItem($event)"
+		(onViewItems)="onViewItems($event)"
+	/>
+</main>

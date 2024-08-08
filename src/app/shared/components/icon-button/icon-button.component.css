@@ -1,0 +1,10 @@
+.container {
+  background-color: transparent;
+	border-radius: 0.2rem;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+  cursor: pointer;
+}
+

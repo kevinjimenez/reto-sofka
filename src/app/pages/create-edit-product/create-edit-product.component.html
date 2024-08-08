@@ -1,0 +1,39 @@
+<app-toast [(isShow)]="toastVisible" [text]="errorMsg()" />
+
+<main class="w-full flex justify-center items-center flex-col">
+	<h1>Formulario de {{ this.id() ? 'actualización' : 'registro' }}</h1>
+	<hr class="w-1/2" />
+	<form
+		[formGroup]="registerForm"
+		(ngSubmit)="onSubmit()"
+		class="w-1/2 grid grid-cols-1 md:grid-cols-2 gap-1"
+	>
+		<app-input label="ID" [control]="registerForm.controls.id" placeholder="ID" />
+		<app-input label="Nombre" [control]="registerForm.controls.name" placeholder="Nombre" />
+		<app-input
+			label="Descripción"
+			[control]="registerForm.controls.description"
+			placeholder="Descripción"
+		/>
+		<app-input label="Logo" [control]="registerForm.controls.logo" placeholder="Logo" />
+		<app-input
+			label="Fecha Liberación"
+			[control]="registerForm.controls.date_release"
+			inputType="date"
+			placeholder="Fecha Liberación"
+		/>
+		<app-input
+			label="Fecha Revisión"
+			[control]="registerForm.controls.date_revision"
+			inputType="date"
+			placeholder="Fecha Revisión"
+		/>
+	</form>
+	<section class="flex justify-center items-center gap-5">
+		<app-button
+			[label]="this.id() ? 'Cancelar' : 'Reiniciar'"
+			(onClick)="this.id() ? onCancel() : onReset()"
+		/>
+		<app-button label="Enviar" (onClick)="onSubmit()" color="second-brand" />
+	</section>
+</main>
