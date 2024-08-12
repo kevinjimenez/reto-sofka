@@ -11,16 +11,9 @@ import { Product } from '../../common/interfaces/product.interface';
 export class ProductsService {
 	private readonly _httpClient = inject(HttpClient);
 
-	//! mejorar
 	getAll() {
 		const url = `${environment.apiUrl}/products`;
-		return this._httpClient.get<any>(url).pipe(
-			catchError(this.handleErrorResponse)
-			// switchMap((response) => {
-			// 	console.log({ response });
-			// 	return response.data;
-			// })
-		);
+		return this._httpClient.get<any>(url).pipe(catchError(this.handleErrorResponse));
 	}
 
 	create(payload: Product) {
