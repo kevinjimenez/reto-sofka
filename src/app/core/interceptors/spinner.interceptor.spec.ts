@@ -1,17 +1,27 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpInterceptorFn } from '@angular/common/http';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppComponent } from '../../app.component';
 
-import { spinnerInterceptor } from './spinner.interceptor';
+describe('AppComponent', () => {
+	let component: AppComponent;
+	let fixture: ComponentFixture<AppComponent>;
 
-describe('spinnerInterceptor', () => {
-  const interceptor: HttpInterceptorFn = (req, next) => 
-    TestBed.runInInjectionContext(() => spinnerInterceptor(req, next));
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			imports: [RouterTestingModule, AppComponent]
+		}).compileComponents();
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
+		fixture = TestBed.createComponent(AppComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should be created', () => {
-    expect(interceptor).toBeTruthy();
-  });
+	it('should create the component', () => {
+		expect(component).toBeTruthy();
+	});
+
+	it('should contain a router-outlet', () => {
+		const compiled = fixture.nativeElement as HTMLElement;
+		expect(compiled.querySelector('router-outlet')).toBeTruthy();
+	});
 });
