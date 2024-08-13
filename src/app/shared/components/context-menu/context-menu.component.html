@@ -1,9 +1,17 @@
 @if (isVisible()) {
 	<div class="context-menu" [ngStyle]="{ 'top.px': y(), 'left.px': x() - 100 }">
 		<ng-content></ng-content>
-		<ul>
+		<ul style="padding-top: 0rem; padding-bottom: 0rem">
 			@for (option of options(); track $index) {
-				<li (click)="onOptionSelected(option.value)">{{ option.label }}</li>
+				<li
+					(click)="onOptionSelected(option.value)"
+					style="padding-top: 0.5rem; padding-bottom: 0.5rem"
+				>
+					{{ option.label }}
+				</li>
+				@if ($index < options().length - 1) {
+					<hr class="divide" />
+				}
 			}
 		</ul>
 	</div>

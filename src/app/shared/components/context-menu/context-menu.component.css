@@ -1,7 +1,7 @@
 .context-menu {
   position: fixed;
-  background: white;
-  border: 1px solid #ccc;
+  background: #ffff;
+  border: 1px solid #4164b56a;
   border-radius: 0.2rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   z-index: 1000;
@@ -21,3 +21,11 @@
 .context-menu li:hover {
   background: #f0f0f0;
 }
+
+
+.divide {
+  padding: 0;
+  margin: 0;
+  border-color: #4164b56a
+}
+
