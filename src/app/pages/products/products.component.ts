@@ -26,7 +26,7 @@ export class ProductsComponent implements OnInit {
 	constructor() {
 		this.fieldSearch.valueChanges.pipe(debounceTime(500)).subscribe((search: string) => {
 			if (!search && search === '') {
-				this.cloneProducts.set(this.originalProducts().slice(0, this.take())); // cambiar
+				this.cloneProducts.set(this.originalProducts().slice(0, this.take()));
 				return;
 			}
 
@@ -40,7 +40,7 @@ export class ProductsComponent implements OnInit {
 	ngOnInit(): void {
 		this._activatedRoute.data.subscribe(({ products }) => {
 			this.originalProducts.set(products.data);
-			this.cloneProducts.set(products.data.slice(0, this.take())); // cambiar
+			this.cloneProducts.set(products.data.slice(0, this.take()));
 		});
 	}
 

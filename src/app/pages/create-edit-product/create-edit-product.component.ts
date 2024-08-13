@@ -27,7 +27,7 @@ export class CreateEditProductComponent implements OnInit {
 	public registerForm = this.formBuilder.group(
 		{
 			id: [
-				this.payloadEdit()?.id || '',
+				this.payloadEdit()?.id ?? '',
 				[Validators.required, Validators.minLength(3), Validators.maxLength(10)],
 				[CustomValiationForm.checkIdValidator(this._productsService)]
 			],
@@ -35,7 +35,7 @@ export class CreateEditProductComponent implements OnInit {
 			description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
 			logo: ['', Validators.required],
 			date_release: ['', [Validators.required, CustomValiationForm.currentDateValidator]],
-			date_revision: ['', Validators.required]
+			date_revision: [{ value: '', disabled: true }, Validators.required]
 		},
 		{
 			validators: [CustomValiationForm.revisionDateValidator]
@@ -88,7 +88,6 @@ export class CreateEditProductComponent implements OnInit {
 					next: ({ message }) => {
 						this.errorMsg.set(message);
 						this.toastVisible.set(true);
-						// this.onReset();
 					},
 					error: (err) => {
 						this.errorMsg.set(err.error.message);
@@ -101,7 +100,6 @@ export class CreateEditProductComponent implements OnInit {
 						this.errorMsg.set(message);
 						this.toastVisible.set(true);
 						this.onReset();
-						// this._router.navigate(['products']);
 					},
 					error: (err) => {
 						this.errorMsg.set(err.error.message);

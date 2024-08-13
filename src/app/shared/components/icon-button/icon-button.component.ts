@@ -12,6 +12,5 @@ export class IconButtonComponent {
 	public icon = input.required<string>();
 
 	public buttonType = input<'button' | 'submit'>('button');
-	// @Output() public onClick: EventEmitter<void> = new EventEmitter();
 	public onClick = output<MouseEvent>();
 }

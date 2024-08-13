@@ -49,6 +49,21 @@ export class CustomValiationForm {
 
 		if (!releaseDateControl || !revisionDateControl) return null;
 
+		if (releaseDateControl.valid) {
+			revisionDateControl.enable({ onlySelf: true });
+		}
+
+		if (releaseDateControl.invalid) {
+			revisionDateControl.disable({ onlySelf: true });
+		}
+
+		releaseDateControl.valueChanges.subscribe(() => {
+			revisionDateControl.setValue('');
+			revisionDateControl.clearAsyncValidators();
+			revisionDateControl.clearValidators();
+			revisionDateControl.updateValueAndValidity();
+		});
+
 		const releaseDate = releaseDateControl.value;
 		const revisionDate = revisionDateControl.value;
 

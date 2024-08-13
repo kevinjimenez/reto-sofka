@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { ProductsService } from '../../../../core';
 import { Product } from '../../../../common/interfaces';
 import { CONTEXT_MENU_OPTIONS } from '../../../../common/constants';
+import { MENU_OPTIONS } from '../../../../common/enums';
 
 @Component({
 	selector: 'app-table',
@@ -66,12 +67,12 @@ export class TableComponent {
 
 	public optionSelected(optionSelected: ContextMenuOptionSelected) {
 		// delete
-		if (optionSelected.option === 2) {
+		if (optionSelected.option === MENU_OPTIONS.DELETE) {
 			this.showOverlay();
 		}
 
 		// update
-		if (optionSelected.option === 1) {
+		if (optionSelected.option === MENU_OPTIONS.UPDATE) {
 			this.showOverlay();
 			this._router.navigate(['products', 'product', this.itemSelected()?.id], {
 				state: { payload: this.itemSelected() }

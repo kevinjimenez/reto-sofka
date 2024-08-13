@@ -11,9 +11,7 @@ import { NgClass } from '@angular/common';
 	styleUrl: './input.component.css'
 })
 export class InputComponent {
-	// @Input() inputType: 'text' | 'number' = 'text';
 	public inputType = input<'text' | 'number' | 'date'>('text');
-	// @Input() placeholder: string = 'Search';
 	public placeholder = input<string>('Search');
 	public label = input<string>();
 	public control = input<FormControl>(new FormControl());

@@ -36,6 +36,12 @@
   border: solid 0.15rem #e74c3c;
 }
 
+
+.button-container > input.invalid-focus:focus {
+  border: solid 0.15rem #e74c3c;
+}
+
+
 .valid {
   border: solid 0.15rem #bdc3c7;
 }

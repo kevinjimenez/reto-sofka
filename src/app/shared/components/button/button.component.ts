@@ -9,13 +9,10 @@ import { Component, input, output } from '@angular/core';
 	styleUrl: './button.component.css'
 })
 export class ButtonComponent {
-	// @Input() buttonType: 'button' | 'submit' = 'button';
 	public buttonType = input<'button' | 'submit'>('button');
-	// @Input({ required: true }) public label!: string;
 	public label = input<string>();
 	public color = input<'primary-brand' | 'second-brand'>('primary-brand');
 	public customClass = input<string>();
-	// @Output() public onClick: EventEmitter<void> = new EventEmitter();
 	public onClick = output();
 
 	private get buttonColor() {
