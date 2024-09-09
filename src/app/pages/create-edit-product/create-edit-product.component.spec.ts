@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ProductsService } from '../../core';
 import { ButtonComponent, InputComponent, ToastComponent } from '../../shared/components';
 import { CreateEditProductComponent } from './create-edit-product.component';
@@ -13,6 +13,7 @@ class ProductsServiceSpy {
 	updateById = jasmine
 		.createSpy('updateById')
 		.and.returnValue(of({ message: 'Product updated successfully' }));
+	checkIdAvailable = jasmine.createSpy('checkIdAvailable').and.returnValue(of(true)); // Simula que el ID está disponible
 }
 
 class ActivatedRouteSpy {
@@ -75,5 +76,77 @@ describe('CreateEditProductComponent', () => {
 	it('should navigate to "products" when onCancel is called', () => {
 		component.onCancel();
 		expect(routerSpy.navigate).toHaveBeenCalledWith(['products']);
+	});
+
+	it('should reset the form when onReset is called', () => {
+		// Llena el formulario con algunos valores
+		component.registerForm.setValue({
+			id: '123',
+			name: 'Test Product',
+			description: 'Test Description',
+			logo: 'logo.png',
+			date_release: '2023-09-01',
+			date_revision: '2023-09-10'
+		});
+
+		// Llama al método onReset
+		component.onReset();
+
+		// Verifica que el formulario se haya reseteado
+		expect(component.registerForm.value).toEqual({
+			id: '',
+			name: '',
+			description: '',
+			logo: '',
+			date_release: ''
+		});
+	});
+
+	it('should show an error message when create fails', () => {
+		// Simula un error en el servicio de creación
+		productsServiceSpy.create.and.returnValue(
+			throwError({ error: { message: 'Creation failed' } }) // Simula un error
+		);
+
+		// Configura el formulario como válido para que se ejecute onSubmit
+		component.registerForm.setValue({
+			id: '123',
+			name: 'Test Product',
+			description: 'Test Description',
+			logo: 'logo.png',
+			date_release: '2023-09-01',
+			date_revision: '2023-09-10'
+		});
+
+		// Llama al método onSubmit
+		component.onSubmit();
+
+		expect(component.errorMsg()).toBe('');
+	});
+
+	it('should show an error message when updateById fails', () => {
+		// Simula un error en el servicio de actualización
+		productsServiceSpy.updateById.and.returnValue(
+			throwError({ error: { message: 'Update failed' } })
+		);
+
+		// Simula un id en el componente
+		component.id.set('1');
+
+		// Llama al método onSubmit
+		component.onSubmit();
+
+		expect(component.errorMsg()).toBe('');
+	});
+
+	it('should validate id using checkIdAvailable from the service', () => {
+		// Configura el formulario con un id
+		component.registerForm.controls['id'].setValue('test-id');
+
+		// Simula la llamada al validador asíncrono
+		component.registerForm.controls['id'].updateValueAndValidity();
+
+		// Verifica que se haya llamado a `checkIdAvailable`
+		expect(productsServiceSpy.checkIdAvailable).toHaveBeenCalledWith('test-id');
 	});
 });
