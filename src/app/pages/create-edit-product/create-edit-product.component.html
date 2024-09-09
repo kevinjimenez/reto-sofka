@@ -34,6 +34,7 @@
 			[label]="this.id() ? 'Cancelar' : 'Reiniciar'"
 			(onClick)="this.id() ? onCancel() : onReset()"
 		/>
+		<app-button label="Regresar" (onClick)="onBack()" color="second-brand" />
 		<app-button label="Enviar" (onClick)="onSubmit()" color="second-brand" />
 	</section>
 </main>

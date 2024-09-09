@@ -1,9 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ButtonComponent, InputComponent, ToastComponent } from '../../shared/components';
-import { ProductsService } from '../../core';
 import { Product } from '../../common/interfaces';
+import { ProductsService } from '../../core';
+import { ButtonComponent, InputComponent, ToastComponent } from '../../shared/components';
 import { CustomValiationForm } from '../../utils';
 
 @Component({
@@ -70,6 +70,10 @@ export class CreateEditProductComponent implements OnInit {
 		});
 
 		this.registerForm.controls.id.disable();
+	}
+
+	public onBack() {
+		this._router.navigate(['/products']);
 	}
 
 	onSubmit() {
