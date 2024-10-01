@@ -6,17 +6,14 @@ import { ProductsService } from '../../core';
 import { ButtonComponent, InputComponent, ToastComponent } from '../../shared/components';
 import { CreateEditProductComponent } from './create-edit-product.component';
 
-class ProductsServiceSpy {
-	create = jasmine
-		.createSpy('create')
-		.and.returnValue(of({ message: 'Product created successfully' }));
-	updateById = jasmine
-		.createSpy('updateById')
-		.and.returnValue(of({ message: 'Product updated successfully' }));
-	checkIdAvailable = jasmine.createSpy('checkIdAvailable').and.returnValue(of(true)); // Simula que el ID está disponible
+// Mock del servicio de productos usando jest
+class ProductsServiceMock {
+	create = jest.fn().mockReturnValue(of({ message: 'Product created successfully' }));
+	updateById = jest.fn().mockReturnValue(of({ message: 'Product updated successfully' }));
+	checkIdAvailable = jest.fn().mockReturnValue(of(true)); // Simula que el ID está disponible
 }
 
-class ActivatedRouteSpy {
+class ActivatedRouteMock {
 	params = of({ id: '1' });
 	get snapshot() {
 		return { params: { id: '1' } };
@@ -26,26 +23,26 @@ class ActivatedRouteSpy {
 describe('CreateEditProductComponent', () => {
 	let component: CreateEditProductComponent;
 	let fixture: ComponentFixture<CreateEditProductComponent>;
-	let productsServiceSpy: ProductsServiceSpy;
-	let routerSpy: jasmine.SpyObj<Router>;
-	let activatedRouteSpy: ActivatedRouteSpy;
+	let productsServiceMock: ProductsServiceMock;
+	let routerMock: jest.Mocked<Router>;
+	let activatedRouteMock: ActivatedRouteMock;
 	let formBuilder: FormBuilder;
 
 	beforeEach(async () => {
-		productsServiceSpy = new ProductsServiceSpy();
-		routerSpy = jasmine.createSpyObj('Router', ['navigate', 'getCurrentNavigation']);
-		activatedRouteSpy = new ActivatedRouteSpy();
+		productsServiceMock = new ProductsServiceMock();
+		routerMock = {
+      navigate: jest.fn().mockResolvedValue(true),
+      getCurrentNavigation: jest.fn().mockReturnValue({
+        id: 123,
+        initialUrl: '/' as any,
+        extractedUrl: '/' as any,
+        trigger: 'imperative',
+        previousNavigation: null,
+        extras: { state: { payload: null } }
+      })
+    } as unknown as jest.Mocked<Router>;
 
-		routerSpy.getCurrentNavigation.and.returnValue({
-			id: 123,
-			initialUrl: '/' as any,
-			extractedUrl: '/' as any,
-			trigger: 'imperative',
-			previousNavigation: null,
-			extras: { state: { payload: null } }
-		});
-
-		routerSpy.navigate.and.callFake(() => Promise.resolve(true));
+		activatedRouteMock = new ActivatedRouteMock();
 
 		await TestBed.configureTestingModule({
 			imports: [
@@ -56,9 +53,9 @@ describe('CreateEditProductComponent', () => {
 				CreateEditProductComponent
 			],
 			providers: [
-				{ provide: ProductsService, useValue: productsServiceSpy },
-				{ provide: Router, useValue: routerSpy },
-				{ provide: ActivatedRoute, useValue: activatedRouteSpy },
+				{ provide: ProductsService, useValue: productsServiceMock },
+				{ provide: Router, useValue: routerMock },
+				{ provide: ActivatedRoute, useValue: activatedRouteMock },
 				FormBuilder
 			]
 		}).compileComponents();
@@ -75,7 +72,7 @@ describe('CreateEditProductComponent', () => {
 
 	it('should navigate to "products" when onCancel is called', () => {
 		component.onCancel();
-		expect(routerSpy.navigate).toHaveBeenCalledWith(['products']);
+		expect(routerMock.navigate).toHaveBeenCalledWith(['products']);
 	});
 
 	it('should reset the form when onReset is called', () => {
@@ -104,8 +101,8 @@ describe('CreateEditProductComponent', () => {
 
 	it('should show an error message when create fails', () => {
 		// Simula un error en el servicio de creación
-		productsServiceSpy.create.and.returnValue(
-			throwError({ error: { message: 'Creation failed' } }) // Simula un error
+		productsServiceMock.create.mockReturnValue(
+			throwError({ error: { message: 'Creation failed' } })
 		);
 
 		// Configura el formulario como válido para que se ejecute onSubmit
@@ -126,7 +123,7 @@ describe('CreateEditProductComponent', () => {
 
 	it('should show an error message when updateById fails', () => {
 		// Simula un error en el servicio de actualización
-		productsServiceSpy.updateById.and.returnValue(
+		productsServiceMock.updateById.mockReturnValue(
 			throwError({ error: { message: 'Update failed' } })
 		);
 
@@ -147,6 +144,6 @@ describe('CreateEditProductComponent', () => {
 		component.registerForm.controls['id'].updateValueAndValidity();
 
 		// Verifica que se haya llamado a `checkIdAvailable`
-		expect(productsServiceSpy.checkIdAvailable).toHaveBeenCalledWith('test-id');
+		expect(productsServiceMock.checkIdAvailable).toHaveBeenCalledWith('test-id');
 	});
 });

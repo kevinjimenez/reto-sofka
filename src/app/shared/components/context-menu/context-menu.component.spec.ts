@@ -29,7 +29,7 @@ describe('ContextMenuComponent', () => {
 	});
 
 	it('should emit onShow when shown', () => {
-		const spy = spyOn(component.onShow, 'emit');
+		const spy = jest.spyOn(component.onShow, 'emit');
 		component.isVisible.set(true);
 		component.onShow.emit();
 		expect(spy).toHaveBeenCalled();

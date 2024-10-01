@@ -9,19 +9,24 @@ import { of } from 'rxjs';
 describe('TableComponent', () => {
 	let component: TableComponent;
 	let fixture: ComponentFixture<TableComponent>;
-	let productsServiceSpy: jasmine.SpyObj<ProductsService>;
-	let routerSpy: jasmine.SpyObj<Router>;
+	let productsServiceMock: jest.Mocked<ProductsService>;
+	let routerMock: jest.Mocked<Router>;
 
 	beforeEach(async () => {
-		productsServiceSpy = jasmine.createSpyObj('ProductsService', ['deleteById']);
-		routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+		productsServiceMock = {
+      deleteById: jest.fn(),
+    } as unknown as jest.Mocked<ProductsService>;
+
+		routerMock = {
+      navigate: jest.fn(),
+    } as unknown as jest.Mocked<Router>;
 
 		await TestBed.configureTestingModule({
 			imports: [TableComponent],
 			providers: [
-				{ provide: ProductsService, useValue: productsServiceSpy },
-				{ provide: Router, useValue: routerSpy }
-			]
+				{ provide: ProductsService, useValue: productsServiceMock },
+				{ provide: Router, useValue: routerMock },
+			],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(TableComponent);
@@ -43,8 +48,8 @@ describe('TableComponent', () => {
 		component.optionSelected({ option: MENU_OPTIONS.UPDATE } as ContextMenuOptionSelected);
 
 		// Verifica que el componente navegue a la ruta correcta
-		expect(routerSpy.navigate).toHaveBeenCalledWith(['products', 'product', mockProduct.id], {
-			state: { payload: mockProduct }
+		expect(routerMock.navigate).toHaveBeenCalledWith(['products', 'product', mockProduct.id], {
+			state: { payload: mockProduct },
 		});
 	});
 
@@ -53,22 +58,22 @@ describe('TableComponent', () => {
 		component.itemSelected.set(mockProduct);
 
 		// Mock de respuesta del servicio de eliminación
-		productsServiceSpy.deleteById.and.returnValue(of({ message: 'Product deleted' } as any));
+		productsServiceMock.deleteById.mockReturnValue(of({ message: 'Product deleted' } as any));
 
-		spyOn(component.onRemoveItem, 'emit'); // Espía el evento de eliminación
+		const emitSpy = jest.spyOn(component.onRemoveItem, 'emit'); // Espía el evento de eliminación
 
 		component.onDelete(); // Llama al método de eliminación
 
-		expect(productsServiceSpy.deleteById).toHaveBeenCalledWith(mockProduct.id); // Verifica que se haya llamado al servicio
-		expect(component.onRemoveItem.emit).toHaveBeenCalledWith(mockProduct.id); // Verifica que se haya emitido el evento
+		expect(productsServiceMock.deleteById).toHaveBeenCalledWith(mockProduct.id); // Verifica que se haya llamado al servicio
+		expect(emitSpy).toHaveBeenCalledWith(mockProduct.id); // Verifica que se haya emitido el evento
 	});
 
 	it('should emit onViewItems when onSelectionChange is called', () => {
-		spyOn(component.onViewItems, 'emit'); // Espía el evento de selección
+		const emitSpy = jest.spyOn(component.onViewItems, 'emit'); // Espía el evento de selección
 
 		const newValue = '10'; // Nuevo valor del select
 		component.onSelectionChange(newValue); // Cambia el valor
 
-		expect(component.onViewItems.emit).toHaveBeenCalledWith(10); // Verifica que se haya emitido el valor como número
+		expect(emitSpy).toHaveBeenCalledWith(10); // Verifica que se haya emitido el valor como número
 	});
 });

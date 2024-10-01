@@ -5,46 +5,49 @@ import { ProductsService } from '../services/products.service';
 import { productsResolver } from './products.resolver';
 
 describe('productsResolver', () => {
-	let productsServiceSpy: jasmine.SpyObj<ProductsService>;
+  let productsServiceSpy: jest.Mocked<ProductsService>;
 
-	const executeResolver: ResolveFn<Observable<unknown>> = (...resolverParameters) =>
-		TestBed.runInInjectionContext(() => productsResolver(...resolverParameters));
+  const executeResolver: ResolveFn<Observable<unknown>> = (...resolverParameters) =>
+    TestBed.runInInjectionContext(() => productsResolver(...resolverParameters));
 
-	beforeEach(() => {
-		const spy = jasmine.createSpyObj('ProductsService', ['getAll']);
+  beforeEach(() => {
+    const productsServiceMock = {
+      getAll: jest.fn()
+    };
 
-		TestBed.configureTestingModule({
-			providers: [{ provide: ProductsService, useValue: spy }]
-		});
+    TestBed.configureTestingModule({
+      providers: [{ provide: ProductsService, useValue: productsServiceMock }]
+    });
 
-		productsServiceSpy = TestBed.inject(ProductsService) as jasmine.SpyObj<ProductsService>;
-	});
+    // Inyectamos el servicio con la tipificación de jest.Mocked
+    productsServiceSpy = TestBed.inject(ProductsService) as jest.Mocked<ProductsService>;
+  });
 
-	it('should be created', () => {
-		expect(executeResolver).toBeTruthy();
-	});
+  it('should be created', () => {
+    expect(executeResolver).toBeTruthy();
+  });
 
-	it('should return an Observable from the service', (done) => {
-		const mockProducts = [
-			{ id: 1, name: 'Product 1' },
-			{ id: 2, name: 'Product 2' }
-		];
-		const mockRoute = {} as ActivatedRouteSnapshot;
-		const mockState = {} as RouterStateSnapshot;
+  it('should return an Observable from the service', async () => {
+    const mockProducts = [
+      { id: 1, name: 'Product 1' },
+      { id: 2, name: 'Product 2' }
+    ];
+    const mockRoute = {} as ActivatedRouteSnapshot;
+    const mockState = {} as RouterStateSnapshot;
 
-		productsServiceSpy.getAll.and.returnValue(of(mockProducts));
+    // Hacemos que el spy devuelva un observable con productos simulados
+    productsServiceSpy.getAll.mockReturnValue(of(mockProducts));
 
-		const result = executeResolver(mockRoute, mockState);
+    const result = executeResolver(mockRoute, mockState);
 
-		if (result instanceof Observable) {
-			result.subscribe((res) => {
-				expect(res).toEqual(mockProducts);
-				done();
-			});
-		} else {
-			fail('Expected an Observable to be returned from the resolver');
-		}
+    // Verificamos si es un Observable y luego nos suscribimos
+    if (result instanceof Observable) {
+      const resolvedData = await result.toPromise(); // Usamos toPromise para manejarlo con async/await
+      expect(resolvedData).toEqual(mockProducts);
+    } else {
+      fail('Expected an Observable to be returned from the resolver');
+    }
 
-		expect(productsServiceSpy.getAll).toHaveBeenCalled();
-	});
+    expect(productsServiceSpy.getAll).toHaveBeenCalled();
+  });
 });

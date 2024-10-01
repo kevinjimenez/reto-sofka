@@ -11,35 +11,38 @@ import { ProductsComponent } from './products.component';
 describe('ProductsComponent', () => {
 	let component: ProductsComponent;
 	let fixture: ComponentFixture<ProductsComponent>;
-	let routerSpy: jasmine.SpyObj<Router>;
-	let activatedRouteSpy: jasmine.SpyObj<ActivatedRoute>;
+	let routerMock: jest.Mocked<Router>;
+	let activatedRouteMock: jest.Mocked<ActivatedRoute>;
 
 	beforeEach(async () => {
-		routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-		activatedRouteSpy = jasmine.createSpyObj('ActivatedRoute', ['data']);
+		routerMock = {
+      navigate: jest.fn(),
+    } as unknown as jest.Mocked<Router>;
 
-		activatedRouteSpy.data = of({
-			products: {
-				data: [
-					{
-						id: '1',
-						name: 'Product 1',
-						description: 'Description 1',
-						logo: 'logo1.png',
-						date_release: '2024-01-01',
-						date_revision: '2024-01-01'
-					},
-					{
-						id: '2',
-						name: 'Product 2',
-						description: 'Description 2',
-						logo: 'logo2.png',
-						date_release: '2024-01-01',
-						date_revision: '2024-01-01'
-					}
-				]
-			}
-		});
+		activatedRouteMock = {
+      data: of({
+        products: {
+          data: [
+            {
+              id: '1',
+              name: 'Product 1',
+              description: 'Description 1',
+              logo: 'logo1.png',
+              date_release: '2024-01-01',
+              date_revision: '2024-01-01',
+            },
+            {
+              id: '2',
+              name: 'Product 2',
+              description: 'Description 2',
+              logo: 'logo2.png',
+              date_release: '2024-01-01',
+              date_revision: '2024-01-01',
+            },
+          ],
+        },
+      }),
+    } as unknown as jest.Mocked<ActivatedRoute>;
 
 		await TestBed.configureTestingModule({
 			imports: [
@@ -48,12 +51,12 @@ describe('ProductsComponent', () => {
 				InputComponent,
 				ButtonComponent,
 				ReactiveFormsModule,
-				HttpClientTestingModule
+				HttpClientTestingModule,
 			],
 			providers: [
-				{ provide: Router, useValue: routerSpy },
-				{ provide: ActivatedRoute, useValue: activatedRouteSpy }
-			]
+				{ provide: Router, useValue: routerMock },
+				{ provide: ActivatedRoute, useValue: activatedRouteMock },
+			],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(ProductsComponent);
@@ -73,7 +76,7 @@ describe('ProductsComponent', () => {
 				description: 'Description 1',
 				logo: 'logo1.png',
 				date_release: '2024-01-01',
-				date_revision: '2024-01-01'
+				date_revision: '2024-01-01',
 			},
 			{
 				id: '2',
@@ -81,8 +84,8 @@ describe('ProductsComponent', () => {
 				description: 'Description 2',
 				logo: 'logo2.png',
 				date_release: '2024-01-01',
-				date_revision: '2024-01-01'
-			}
+				date_revision: '2024-01-01',
+			},
 		]);
 		expect(component.cloneProducts()).toEqual(
 			component.originalProducts().slice(0, component.take())
@@ -90,12 +93,12 @@ describe('ProductsComponent', () => {
 	});
 
 	it('should call onNewProduct when "Agregar" button is clicked', () => {
-		spyOn(component, 'onNewProduct').and.callThrough(); // Asegura que el método 'onNewProduct' siga ejecutándose
+		const onNewProductSpy = jest.spyOn(component, 'onNewProduct'); // Usa jest.spyOn para espiar el método
 		const buttonComponent = fixture.debugElement.query(By.directive(ButtonComponent));
 		buttonComponent.triggerEventHandler('onClick', null); // Simula el evento de clic
 
-		expect(component.onNewProduct).toHaveBeenCalled();
-		expect(routerSpy.navigate).toHaveBeenCalledWith(['products', 'product']); // Verifica que Router.navigate haya sido llamado
+		expect(onNewProductSpy).toHaveBeenCalled();
+		expect(routerMock.navigate).toHaveBeenCalledWith(['products', 'product']);
 	});
 
 	it('should update cloneProducts on search input', (done) => {
@@ -108,8 +111,8 @@ describe('ProductsComponent', () => {
 					description: 'Description 1',
 					logo: 'logo1.png',
 					date_release: '2024-01-01',
-					date_revision: '2024-01-01'
-				}
+					date_revision: '2024-01-01',
+				},
 			]);
 			done();
 		}, 600); // Se espera debido al debounceTime de 500ms
@@ -146,8 +149,8 @@ describe('ProductsComponent', () => {
 				description: 'Description 1',
 				logo: 'logo1.png',
 				date_release: '2024-01-01',
-				date_revision: '2024-01-01'
-			}
+				date_revision: '2024-01-01',
+			},
 		]);
 	});
 });

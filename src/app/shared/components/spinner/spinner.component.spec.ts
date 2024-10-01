@@ -6,21 +6,20 @@ import { SpinnerComponent } from './spinner.component';
 describe('SpinnerComponent', () => {
 	let component: SpinnerComponent;
 	let fixture: ComponentFixture<SpinnerComponent>;
-	let spinnerService: jasmine.SpyObj<SpinnerService>;
+	let spinnerServiceMock: jest.Mocked<SpinnerService>;
 
 	beforeEach(async () => {
-		const spinnerServiceSpy = jasmine.createSpyObj('SpinnerService', [], {
-			isLoading: signal<boolean>(true)
-		});
+		spinnerServiceMock = {
+			isLoading: signal<boolean>(true),
+		} as jest.Mocked<SpinnerService>;
 
 		await TestBed.configureTestingModule({
 			imports: [SpinnerComponent],
-			providers: [{ provide: SpinnerService, useValue: spinnerServiceSpy }]
+			providers: [{ provide: SpinnerService, useValue: spinnerServiceMock }],
 		}).compileComponents();
 
 		fixture = TestBed.createComponent(SpinnerComponent);
 		component = fixture.componentInstance;
-		spinnerService = TestBed.inject(SpinnerService) as jasmine.SpyObj<SpinnerService>;
 		fixture.detectChanges();
 	});
 
