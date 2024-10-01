@@ -8,29 +8,29 @@ import { CreateEditProductComponent } from './create-edit-product.component';
 
 // Mock del servicio de productos usando jest
 class ProductsServiceMock {
-	create = jest.fn().mockReturnValue(of({ message: 'Product created successfully' }));
-	updateById = jest.fn().mockReturnValue(of({ message: 'Product updated successfully' }));
-	checkIdAvailable = jest.fn().mockReturnValue(of(true)); // Simula que el ID está disponible
+  create = jest.fn().mockReturnValue(of({ message: 'Product created successfully' }));
+  updateById = jest.fn().mockReturnValue(of({ message: 'Product updated successfully' }));
+  checkIdAvailable = jest.fn().mockReturnValue(of(true)); // Simula que el ID está disponible
 }
 
 class ActivatedRouteMock {
-	params = of({ id: '1' });
-	get snapshot() {
-		return { params: { id: '1' } };
-	}
+  params = of({ id: '1' });
+  get snapshot() {
+    return { params: { id: '1' } };
+  }
 }
 
 describe('CreateEditProductComponent', () => {
-	let component: CreateEditProductComponent;
-	let fixture: ComponentFixture<CreateEditProductComponent>;
-	let productsServiceMock: ProductsServiceMock;
-	let routerMock: jest.Mocked<Router>;
-	let activatedRouteMock: ActivatedRouteMock;
-	let formBuilder: FormBuilder;
+  let component: CreateEditProductComponent;
+  let fixture: ComponentFixture<CreateEditProductComponent>;
+  let productsServiceMock: ProductsServiceMock;
+  let routerMock: jest.Mocked<Router>;
+  let activatedRouteMock: ActivatedRouteMock;
+  let formBuilder: FormBuilder;
 
-	beforeEach(async () => {
-		productsServiceMock = new ProductsServiceMock();
-		routerMock = {
+  beforeEach(async () => {
+    productsServiceMock = new ProductsServiceMock();
+    routerMock = {
       navigate: jest.fn().mockResolvedValue(true),
       getCurrentNavigation: jest.fn().mockReturnValue({
         id: 123,
@@ -42,108 +42,172 @@ describe('CreateEditProductComponent', () => {
       })
     } as unknown as jest.Mocked<Router>;
 
-		activatedRouteMock = new ActivatedRouteMock();
+    activatedRouteMock = new ActivatedRouteMock();
 
-		await TestBed.configureTestingModule({
-			imports: [
-				ReactiveFormsModule,
-				InputComponent,
-				ButtonComponent,
-				ToastComponent,
-				CreateEditProductComponent
-			],
-			providers: [
-				{ provide: ProductsService, useValue: productsServiceMock },
-				{ provide: Router, useValue: routerMock },
-				{ provide: ActivatedRoute, useValue: activatedRouteMock },
-				FormBuilder
-			]
-		}).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        InputComponent,
+        ButtonComponent,
+        ToastComponent,
+        CreateEditProductComponent
+      ],
+      providers: [
+        { provide: ProductsService, useValue: productsServiceMock },
+        { provide: Router, useValue: routerMock },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        FormBuilder
+      ]
+    }).compileComponents();
 
-		fixture = TestBed.createComponent(CreateEditProductComponent);
-		component = fixture.componentInstance;
+    fixture = TestBed.createComponent(CreateEditProductComponent);
+    component = fixture.componentInstance;
 
-		fixture.detectChanges();
-	});
+    fixture.detectChanges();
+  });
 
-	it('should create the component', () => {
-		expect(component).toBeTruthy();
-	});
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
+  });
 
-	it('should navigate to "products" when onCancel is called', () => {
-		component.onCancel();
-		expect(routerMock.navigate).toHaveBeenCalledWith(['products']);
-	});
+  it('should navigate to "products" when onCancel is called', () => {
+    component.onCancel();
+    expect(routerMock.navigate).toHaveBeenCalledWith(['products']);
+  });
 
-	it('should reset the form when onReset is called', () => {
-		// Llena el formulario con algunos valores
-		component.registerForm.setValue({
-			id: '123',
-			name: 'Test Product',
-			description: 'Test Description',
-			logo: 'logo.png',
-			date_release: '2023-09-01',
-			date_revision: '2023-09-10'
-		});
+  it('should reset the form when onReset is called', () => {
+    // Fill the form with some values
+    component.registerForm.setValue({
+      id: '123',
+      name: 'Test Product',
+      description: 'Test Description',
+      logo: 'logo.png',
+      date_release: '2023-09-01',
+      date_revision: '2023-09-10'
+    });
 
-		// Llama al método onReset
-		component.onReset();
+    // Call the onReset method
+    component.onReset();
 
-		// Verifica que el formulario se haya reseteado
-		expect(component.registerForm.value).toEqual({
-			id: '',
-			name: '',
-			description: '',
-			logo: '',
-			date_release: ''
-		});
-	});
+    // Check that the form has been reset
+    expect(component.registerForm.value).toEqual({
+      id: '',
+      name: '',
+      description: '',
+      logo: '',
+      date_release: '',
+      // date_revision: ''
+    });
+  });
 
-	it('should show an error message when create fails', () => {
-		// Simula un error en el servicio de creación
-		productsServiceMock.create.mockReturnValue(
-			throwError({ error: { message: 'Creation failed' } })
-		);
+  it('should show an error message when create fails', () => {
+    // Simulate a creation error
+    productsServiceMock.create.mockReturnValue(
+      throwError({ error: { message: 'Creation failed' } })
+    );
 
-		// Configura el formulario como válido para que se ejecute onSubmit
-		component.registerForm.setValue({
-			id: '123',
-			name: 'Test Product',
-			description: 'Test Description',
-			logo: 'logo.png',
-			date_release: '2023-09-01',
-			date_revision: '2023-09-10'
-		});
+    // Set up the form as valid
+    component.registerForm.setValue({
+      id: '123',
+      name: 'Test Product',
+      description: 'Test Description',
+      logo: 'logo.png',
+      date_release: '2023-09-01',
+      date_revision: '2023-09-10'
+    });
 
-		// Llama al método onSubmit
-		component.onSubmit();
+    // Call the onSubmit method
+    component.onSubmit();
 
-		expect(component.errorMsg()).toBe('');
-	});
+    // Check that the error message is set correctly
+    expect(component.errorMsg()).toBe('');
+  });
 
-	it('should show an error message when updateById fails', () => {
-		// Simula un error en el servicio de actualización
-		productsServiceMock.updateById.mockReturnValue(
-			throwError({ error: { message: 'Update failed' } })
-		);
+  it('should show an error message when updateById fails', () => {
+    // Simulate an update error
+    productsServiceMock.updateById.mockReturnValue(
+      throwError({ error: { message: 'Update failed' } })
+    );
 
-		// Simula un id en el componente
-		component.id.set('1');
+    // Simulate an id in the component
+    component.id.set('1');
 
-		// Llama al método onSubmit
-		component.onSubmit();
+    // Call the onSubmit method
+    component.onSubmit();
 
-		expect(component.errorMsg()).toBe('');
-	});
+    // Check that the error message is set correctly
+    expect(component.errorMsg()).toBe('');
+  });
 
-	it('should validate id using checkIdAvailable from the service', () => {
-		// Configura el formulario con un id
-		component.registerForm.controls['id'].setValue('test-id');
+  it('should validate id using checkIdAvailable from the service', () => {
+    // Set the id control value
+    component.registerForm.controls['id'].setValue('test-id');
 
-		// Simula la llamada al validador asíncrono
-		component.registerForm.controls['id'].updateValueAndValidity();
+    // Simulate the call to the asynchronous validator
+    component.registerForm.controls['id'].updateValueAndValidity();
 
-		// Verifica que se haya llamado a `checkIdAvailable`
-		expect(productsServiceMock.checkIdAvailable).toHaveBeenCalledWith('test-id');
-	});
+    // Verify that `checkIdAvailable` was called
+    expect(productsServiceMock.checkIdAvailable).toHaveBeenCalledWith('test-id');
+  });
+
+  it('should set form values correctly when editing a product', () => {
+    // Simulate a payload for editing
+    const payload = {
+      // id: '123',
+      name: 'Test Product',
+      description: 'Test Description',
+      logo: 'logo.png',
+      date_release: '2023-09-01',
+      // date_revision: '2023-09-10'
+    };
+
+    // component.registerForm.setValue(payload);
+
+    // Set the payloadEdit signal
+    component.payloadEdit.set({...payload, id: '123', date_revision: '2023-09-10'});
+
+    // Initialize the form
+    component.ngOnInit();
+
+    // Verify that the form values are set correctly
+    expect(component.registerForm.value).toEqual(payload);
+  });
+
+  it('should call setValueForm when ngOnInit is called with payloadEdit', () => {
+    const payload = {
+      id: '123',
+      name: 'Test Product',
+      description: 'Test Description',
+      logo: 'logo.png',
+      date_release: '2023-09-01',
+      date_revision: '2023-09-10'
+    };
+
+    component.payloadEdit.set(payload);
+    jest.spyOn(component, 'setValueForm'); // Spy on setValueForm method
+
+    component.ngOnInit();
+
+    expect(component.setValueForm).toHaveBeenCalled(); // Verify that setValueForm was called
+  });
+
+  it('should not call setValueForm when ngOnInit is called without payloadEdit', () => {
+    jest.spyOn(component, 'setValueForm');
+
+    component.ngOnInit();
+
+    expect(component.setValueForm).not.toHaveBeenCalled(); // Verify that setValueForm was not called
+  });
+
+  it('should mark all fields as touched when form is invalid', () => {
+    component.onSubmit(); // Call submit without filling the form
+
+    // Check that all fields have been marked as touched
+    expect(component.registerForm.controls['id'].touched).toBe(true);
+    expect(component.registerForm.controls['name'].touched).toBe(true);
+    expect(component.registerForm.controls['description'].touched).toBe(true);
+    expect(component.registerForm.controls['logo'].touched).toBe(true);
+    expect(component.registerForm.controls['date_release'].touched).toBe(true);
+    expect(component.registerForm.controls['date_revision'].touched).toBe(true);
+  });
 });

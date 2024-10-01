@@ -20,4 +20,20 @@ describe('ToastComponent', () => {
 	it('should create', () => {
 		expect(component).toBeTruthy();
 	});
+
+  it('should show the toast when show() is called', () => {
+		component.isShow.set(true);
+		expect(component.isShow()).toBe(true);
+	});
+
+	it('should hide the toast when hide() is called', () => {
+		component.isShow();
+		component.hide();
+		expect(component.isShow()).toBe(false);
+	});
+
+	it('should display the text passed as input', () => {
+		component.text = 'Test Toast Message';
+		expect(component.text).toBe('Test Toast Message');
+	});
 });

@@ -1,30 +1,33 @@
 module.exports = {
+  cache: false,
+  maxWorkers: 2,
+  clearMocks: true,
   preset: 'jest-preset-angular',
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
   globalSetup: 'jest-preset-angular/global-setup',
+  collectCoverage: true, // Habilita la recopilación de cobertura
+  collectCoverageFrom: [ // Especifica qué archivos incluir en la cobertura
+    'src/**/*.ts', // Incluye todos los archivos TypeScript en la carpeta src
+    '!src/**/*.spec.ts', // Excluye archivos de pruebas
+    '!src/main.ts', // Excluye el archivo de entrada principal
+    '!src/polyfills.ts', // Excluye el archivo de polyfills
+    '!src/environments/**', // Excluye archivos de configuración del entorno
+  ],
+  coveragePathIgnorePatterns: [
+    '.config.ts',
+    '.routes.ts',
+    '.interface.ts',
+    '.interceptor.ts',
+    'index.ts',
+    'utils'
+  ],
+  coverageDirectory: '<rootDir>/coverage', // Especifica el directorio donde se guardarán los reportes de cobertura
+  coverageThreshold: {
+    global: {
+      lines: 80, // Cobertura mínima del 80% en líneas
+      statements: 80, // Cobertura mínima del 80% en declaraciones
+      branches: 70, // Cobertura mínima del 80% en ramas
+      functions: 80, // Cobertura mínima del 80% en funciones
+    },
+  },
 };
-
-// module.exports = {
-//   preset: 'jest-preset-angular',
-//   testEnvironment: 'jsdom',
-//   testMatch: ['**/+(*.)+(spec).+(ts)'],
-//   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
-//   transform: {
-//     '^.+\\.(ts|js|html)$': 'jest-preset-angular',
-//   },
-//   moduleNameMapper: {
-//     '^@app/(.*)$': '<rootDir>/src/app/$1',
-//     '^@env/(.*)$': '<rootDir>/src/environments/$1',
-//   },
-//   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
-//   collectCoverage: true,
-//   coverageReporters: ['html'],
-//   coverageDirectory: 'coverage/jest',
-//   moduleFileExtensions: ['ts', 'html', 'js', 'json'],
-//   globals: {
-//     'ts-jest': {
-//       tsconfig: '<rootDir>/tsconfig.spec.json',
-//       stringifyContentPathRegex: '\\.html$',
-//     },
-//   },
-// };
