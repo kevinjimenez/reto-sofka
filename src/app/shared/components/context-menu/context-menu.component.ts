@@ -22,11 +22,11 @@ export class ContextMenuComponent {
 	public y = model<number>(0);
 	public itemSelected = model<Product | null>(null);
 
-	hide() {
+	public hide() {
 		this.isVisible.set(false);
 	}
 
-	onOptionSelected(option: number) {
+	public onOptionSelected(option: number) {
 		const selected: ContextMenuOptionSelected = {
 			option,
 			item: this.itemSelected()
@@ -36,7 +36,7 @@ export class ContextMenuComponent {
 	}
 
 	@HostListener('document:click', ['$event'])
-	onDocumentClick(event: MouseEvent) {
+	public onDocumentClick(event: MouseEvent) {
 		this.hide();
 	}
 }

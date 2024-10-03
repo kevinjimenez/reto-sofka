@@ -18,7 +18,7 @@ const errorMessage: Record<string, string> = {
 export class CustomValiationForm {
 	static message(errors: Record<string, string | object>, label?: string): string | null {
 		for (const key in errors) {
-			if (Object.prototype.hasOwnProperty.call(errors!, key)) {
+			if (Object.hasOwn(errors, key)) {
 				const msg = errorMessage[key];
 				if ((errors[key] as any).requiredLength && label)
 					return msg

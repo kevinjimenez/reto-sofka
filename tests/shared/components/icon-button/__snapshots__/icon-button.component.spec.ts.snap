@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IconButtonComponent should match snapshot 1`] = `
+<div
+  id="root1"
+>
+  <button
+    class="container"
+    type="button"
+  >
+    <img
+      alt="test"
+      src="assets/icons/test"
+    />
+  </button>
+</div>
+`;

@@ -17,17 +17,17 @@ module.exports = {
     '.config.ts',
     '.routes.ts',
     '.interface.ts',
-    '.interceptor.ts',
     'index.ts',
-    'utils'
+    'utils',
+    'common'
   ],
   coverageDirectory: '<rootDir>/coverage', // Especifica el directorio donde se guardarán los reportes de cobertura
   coverageThreshold: {
     global: {
-      lines: 80, // Cobertura mínima del 80% en líneas
-      statements: 80, // Cobertura mínima del 80% en declaraciones
-      branches: 70, // Cobertura mínima del 80% en ramas
-      functions: 80, // Cobertura mínima del 80% en funciones
+      lines: 90,
+      statements: 90,
+      branches: 90,
+      functions: 90,
     },
   },
 };

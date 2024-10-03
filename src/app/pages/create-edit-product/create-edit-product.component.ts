@@ -52,13 +52,13 @@ export class CreateEditProductComponent implements OnInit {
 		});
 	}
 
-	ngOnInit(): void {
+	public ngOnInit(): void {
 		if (this.payloadEdit()) {
 			this.setValueForm();
 		}
 	}
 
-	setValueForm() {
+	public setValueForm() {
 		this.registerForm.controls.id.clearAsyncValidators();
 		this.registerForm.setValue({
 			id: this.payloadEdit()!.id,
@@ -76,7 +76,7 @@ export class CreateEditProductComponent implements OnInit {
 		this._router.navigate(['/products']);
 	}
 
-	onSubmit() {
+	public onSubmit() {
 		if (this.registerForm.valid) {
 			const newProduct: Partial<Product> = {
 				id: this.registerForm.value.id!,
@@ -116,11 +116,11 @@ export class CreateEditProductComponent implements OnInit {
 		}
 	}
 
-	onReset() {
+	public onReset() {
 		this.registerForm.reset();
 	}
 
-	onCancel() {
+	public onCancel() {
 		this._router.navigate(['products']);
 	}
 }

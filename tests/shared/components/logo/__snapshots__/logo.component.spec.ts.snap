@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LogoComponent should match snapshot 1`] = `
+<div
+  id="root1"
+>
+  <img
+    alt="__logo__"
+    class="logo"
+    onerror=""
+    src="https://placehold.co/600x400"
+  />
+  
+  
+</div>
+`;

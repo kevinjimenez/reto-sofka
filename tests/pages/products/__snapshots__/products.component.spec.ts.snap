@@ -1,0 +1,286 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductsComponent should match snapshot 1`] = `
+DebugElement {
+  "nativeNode": <div
+    id="root1"
+  >
+    <main
+      class="container"
+    >
+      <header
+        class="flex justify-between items-center flex-row gap-1 my-1"
+      >
+        <app-input>
+          <section
+            class="button-container"
+          >
+            
+            <input
+              class="valid ng-untouched ng-pristine ng-valid"
+              id="undefined"
+              placeholder="Search"
+              type="text"
+            />
+            
+          </section>
+        </app-input>
+        <app-button
+          color="second-brand"
+          label="Agregar"
+        >
+          <button
+            class="secundary"
+            type="button"
+          >
+             Agregar
+
+          </button>
+        </app-button>
+      </header>
+      <app-table>
+        <app-toast>
+          
+        </app-toast>
+        <section
+          class="table-container"
+        >
+          <div
+            class="table-wrapper"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th>
+                    <span
+                      class="flex justify-center items-center w-full gap-1/2"
+                    >
+                       Logo 
+                    </span>
+                  </th>
+                  <th>
+                    <span
+                      class="flex items-center w-full gap-1/2"
+                    >
+                       Nombre del producto 
+                    </span>
+                  </th>
+                  <th>
+                    <span
+                      class="flex items-center w-full gap-1/2"
+                    >
+                       Descripción 
+                      <app-alert-circle>
+                        <svg
+                          class="primary"
+                          fill="currentColor"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          width="24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M0 0h24v24H0z"
+                            fill="none"
+                            stroke="none"
+                          />
+                          <path
+                            d="M12 2c5.523 0 10 4.477 10 10a10 10 0 0 1 -19.995 .324l-.005 -.324l.004 -.28c.148 -5.393 4.566 -9.72 9.996 -9.72zm.01 13l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -8a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z"
+                          />
+                        </svg>
+                      </app-alert-circle>
+                    </span>
+                  </th>
+                  <th>
+                    <span
+                      class="flex items-center w-full gap-1/2"
+                    >
+                       Fecha de liberación 
+                      <app-alert-circle>
+                        <svg
+                          class="primary"
+                          fill="currentColor"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          width="24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M0 0h24v24H0z"
+                            fill="none"
+                            stroke="none"
+                          />
+                          <path
+                            d="M12 2c5.523 0 10 4.477 10 10a10 10 0 0 1 -19.995 .324l-.005 -.324l.004 -.28c.148 -5.393 4.566 -9.72 9.996 -9.72zm.01 13l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -8a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z"
+                          />
+                        </svg>
+                      </app-alert-circle>
+                    </span>
+                  </th>
+                  <th>
+                    <span
+                      class="flex items-center w-full gap-1/2"
+                    >
+                       Fecha de reestructuración 
+                      <app-alert-circle>
+                        <svg
+                          class="primary"
+                          fill="currentColor"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          width="24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M0 0h24v24H0z"
+                            fill="none"
+                            stroke="none"
+                          />
+                          <path
+                            d="M12 2c5.523 0 10 4.477 10 10a10 10 0 0 1 -19.995 .324l-.005 -.324l.004 -.28c.148 -5.393 4.566 -9.72 9.996 -9.72zm.01 13l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -8a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z"
+                          />
+                        </svg>
+                      </app-alert-circle>
+                    </span>
+                  </th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span
+                      class="flex justify-center items-center w-full"
+                    >
+                      <app-logo>
+                        <img
+                          alt="__logo__"
+                          class="logo"
+                          onerror=""
+                          src="logo1.png"
+                        />
+                        
+                        
+                      </app-logo>
+                    </span>
+                  </td>
+                  <td>
+                    Product 1
+                  </td>
+                  <td>
+                    Description 1
+                  </td>
+                  <td>
+                    2024-01-01
+                  </td>
+                  <td>
+                    2024-01-01
+                  </td>
+                  <td>
+                    <app-icon-button
+                      icon="dots-vertical.svg"
+                    >
+                      <button
+                        class="container"
+                        type="button"
+                      >
+                        <img
+                          alt="dots-vertical.svg"
+                          src="assets/icons/dots-vertical.svg"
+                        />
+                      </button>
+                    </app-icon-button>
+                    <app-context-menu>
+                      
+                    </app-context-menu>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span
+                      class="flex justify-center items-center w-full"
+                    >
+                      <app-logo>
+                        <img
+                          alt="__logo__"
+                          class="logo"
+                          onerror=""
+                          src="logo2.png"
+                        />
+                        
+                        
+                      </app-logo>
+                    </span>
+                  </td>
+                  <td>
+                    Product 2
+                  </td>
+                  <td>
+                    Description 2
+                  </td>
+                  <td>
+                    2024-01-01
+                  </td>
+                  <td>
+                    2024-01-01
+                  </td>
+                  <td>
+                    <app-icon-button
+                      icon="dots-vertical.svg"
+                    >
+                      <button
+                        class="container"
+                        type="button"
+                      >
+                        <img
+                          alt="dots-vertical.svg"
+                          src="assets/icons/dots-vertical.svg"
+                        />
+                      </button>
+                    </app-icon-button>
+                    <app-context-menu>
+                      
+                    </app-context-menu>
+                  </td>
+                </tr>
+                
+                
+                
+              </tbody>
+            </table>
+          </div>
+          <footer
+            class="table-footer"
+          >
+            <span>
+              2 Resultados
+            </span>
+            <select
+              class="ng-untouched ng-pristine ng-valid"
+            >
+              <option
+                value="5"
+              >
+                5
+              </option>
+              <option
+                value="10"
+              >
+                10
+              </option>
+              <option
+                value="15"
+              >
+                15
+              </option>
+            </select>
+          </footer>
+        </section>
+        <app-overlay>
+          
+        </app-overlay>
+      </app-table>
+    </main>
+  </div>,
+}
+`;

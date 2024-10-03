@@ -37,25 +37,25 @@ export class ProductsComponent implements OnInit {
 		});
 	}
 
-	ngOnInit(): void {
+	public ngOnInit(): void {
 		this._activatedRoute.data.subscribe(({ products }) => {
 			this.originalProducts.set(products.data);
 			this.cloneProducts.set(products.data.slice(0, this.take()));
 		});
 	}
 
-	onNewProduct(): void {
+	public onNewProduct(): void {
 		this._router.navigate(['products', 'product']);
 	}
 
-	onRemoveItem(id: string): void {
+	public onRemoveItem(id: string): void {
 		const newCloneProducts = this.cloneProducts().filter((product) => product.id !== id);
 		const newOriginalProducts = this.originalProducts().filter((product) => product.id !== id);
 		this.cloneProducts.update(() => newCloneProducts);
 		this.originalProducts.update(() => newOriginalProducts);
 	}
 
-	onViewItems(value: number): void {
+	public onViewItems(value: number): void {
 		this.take.update(() => value);
 		this.cloneProducts.update(() => this.originalProducts().slice(0, value));
 	}

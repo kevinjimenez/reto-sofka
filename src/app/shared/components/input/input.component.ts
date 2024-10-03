@@ -11,20 +11,18 @@ import { NgClass } from '@angular/common';
 	styleUrl: './input.component.css'
 })
 export class InputComponent {
-  [x: string]: any;
 	public inputType = input<'text' | 'number' | 'date'>('text');
 	public placeholder = input<string>('Search');
 	public label = input<string>();
 	public control = input<FormControl>(new FormControl());
 	public required = input<boolean>(false);
-  component: any;
 
 	public get invalidField() {
 		return this.control().touched && this.control().invalid;
 	}
 
 	public get errorMessage(): string | null {
-		if (!this.control() && !this.control().errors) return null;
+		if (!this.control() && !this.control()?.errors) return null;
 
 		return CustomValiationForm.message(this.control().errors!, this.label());
 	}

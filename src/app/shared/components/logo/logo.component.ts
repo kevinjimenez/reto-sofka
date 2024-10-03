@@ -16,7 +16,7 @@ export class LogoComponent {
 		}
 	}
 
-	setValue() {
+	public setError() {
 		this.hasError.set(true);
 	}
 }

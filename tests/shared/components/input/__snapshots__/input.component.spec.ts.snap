@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputComponent should match snapshot 1`] = `
+<div
+  id="root1"
+>
+  <section
+    class="button-container"
+  >
+    
+    <input
+      class="valid ng-untouched ng-pristine ng-valid"
+      id="undefined"
+      placeholder="Search"
+      type="text"
+    />
+    
+  </section>
+</div>
+`;
