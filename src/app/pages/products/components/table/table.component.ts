@@ -1,15 +1,14 @@
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CONTEXT_MENU_OPTIONS } from '../../../../common/constants';
+import { CONTEXT_MENU_OPTIONS, PRODUCT_TABLE_HEADERS } from '../../../../common/constants';
 import { MENU_OPTIONS } from '../../../../common/enums';
-import { Product, TableHeaderInterface } from '../../../../common/interfaces';
+import { Product } from '../../../../common/interfaces';
 import { ProductsService } from '../../../../core';
 import {
 	AlertCircleComponent,
 	ButtonComponent,
 	ContextMenuComponent,
-	ContextMenuOption,
 	ContextMenuOptionSelected,
 	IconButtonComponent,
 	LogoComponent,
@@ -18,7 +17,6 @@ import {
 	TooltipComponent
 } from '../../../../shared/components';
 import { TooltipDirective } from '../../../../shared/directives';
-import { PRODUCT_TABLE_HEADERS } from '../../../../common/constants/table-headers';
 
 @Component({
 	selector: 'app-table',

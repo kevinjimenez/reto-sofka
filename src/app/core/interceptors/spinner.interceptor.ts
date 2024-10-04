@@ -9,8 +9,6 @@ export const spinnerInterceptor: HttpInterceptorFn = (req, next) => {
 	const spinnerService = inject(SpinnerService);
 
 	if (!req.headers.get('skip')) {
-		console.log('spinner');
-
 		if (activeRequest() === 0) spinnerService.show();
 		activeRequest.update((cunrrent) => cunrrent + 1);
 	}

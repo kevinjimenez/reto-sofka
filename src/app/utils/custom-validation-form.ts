@@ -1,30 +1,30 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import dayjs from 'dayjs';
 import { debounceTime, map } from 'rxjs';
+import { ERROR_INPUT_MESSAGE } from '../common/constants';
+import { ErrorInputInterface } from '../common/interfaces';
 import { ProductsService } from '../core/services/products.service';
 
-const errorMessage: Record<string, string> = {
-	required: 'El campo {{label}} es requerido',
-	email: 'El campo {{label}} no es un correo valido',
-	password:
-		'El campo {{label}} debe tener al menos una minuscula, mayuscula, número, caracter especial y longitud sea mayor o igual a 4',
-	minlength: 'El campo {{label}} debe tener minimo {{minlength}} caracteres',
-	maxlength: 'El campo {{label}} debe tener maximo {{maxlength}} caracteres',
-	currentDate: 'La fecha debe ser mayor o igual a la fecha actual',
-	dateNotOneYearLater: 'La fecha debe ser mayor o igual a la fecha actual + 1 año',
-	exists: 'El ID ya existe'
-};
-
 export class CustomValiationForm {
-	static message(errors: Record<string, string | object>, label?: string): string | null {
+	static message(
+		errors: Record<string, string | ErrorInputInterface>,
+		label?: string
+	): string | null {
+		console.log(errors);
+
 		for (const key in errors) {
+			console.log(key);
 			if (Object.hasOwn(errors, key)) {
-				const msg = errorMessage[key];
-				if ((errors[key] as any).requiredLength && label)
+				const msg = ERROR_INPUT_MESSAGE[key];
+				console.log(errors[key], typeof errors[key]);
+
+				if (typeof errors[key] === 'object' && label) {
+					const requiredLength = errors[key].requiredLength;
 					return msg
 						.replace('{{label}}', label)
-						.replace('{{minlength}}', (errors[key] as any).requiredLength)
-						.replace('{{maxlength}}', (errors[key] as any).requiredLength);
+						.replace('{{minlength}}', `${requiredLength}`)
+						.replace('{{maxlength}}', `${requiredLength}`);
+				}
 				if (label) return msg.replace('{{label}}', label);
 				return msg.replace('{{label}}', '');
 			}
@@ -43,7 +43,7 @@ export class CustomValiationForm {
 		}
 	}
 
-	static revisionDateValidator(control: AbstractControl): null {
+	static oneYearAfterReleaseValidator(control: AbstractControl<string>): ValidationErrors | null {
 		const releaseDateControl = control.get('date_release');
 		const revisionDateControl = control.get('date_revision');
 
@@ -72,17 +72,20 @@ export class CustomValiationForm {
 				dayjs(releaseDate).add(1, 'year').subtract(1, 'day'),
 				'day'
 			);
-			if (!isOneYearLater) revisionDateControl.setErrors({ dateNotOneYearLater: true });
+			if (!isOneYearLater) {
+				revisionDateControl.setErrors({ oneYearAfterRelease: true });
+				return { oneYearAfterRelease: true };
+			}
 		}
 
 		return null;
 	}
 
-	static checkIdValidator(productService: ProductsService): AsyncValidatorFn {
+	static availableIdValidator(productService: ProductsService): AsyncValidatorFn {
 		return (control: AbstractControl) => {
 			return productService.checkIdAvailable(control.value).pipe(
 				debounceTime(500),
-				map((result: boolean) => (result ? { exists: true } : null))
+				map((result: boolean) => (result ? { availableId: true } : null))
 			);
 		};
 	}

@@ -29,7 +29,7 @@ export class CreateEditProductComponent implements OnInit {
 			id: [
 				this.payloadEdit()?.id ?? '',
 				[Validators.required, Validators.minLength(3), Validators.maxLength(10)],
-				[CustomValiationForm.checkIdValidator(this._productsService)]
+				[CustomValiationForm.availableIdValidator(this._productsService)]
 			],
 			name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
 			description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
@@ -38,7 +38,7 @@ export class CreateEditProductComponent implements OnInit {
 			date_revision: [{ value: '', disabled: true }, Validators.required]
 		},
 		{
-			validators: [CustomValiationForm.revisionDateValidator]
+			validators: [CustomValiationForm.oneYearAfterReleaseValidator]
 		}
 	);
 
