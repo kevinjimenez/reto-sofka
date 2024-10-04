@@ -65,3 +65,9 @@ th {
   justify-content: center;
   align-items: center;
 }
+
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}

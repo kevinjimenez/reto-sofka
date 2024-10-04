@@ -4,26 +4,19 @@
 		<table>
 			<thead>
 				<tr>
-					<th>
-						<span class="flex justify-center items-center w-full gap-1/2"> Logo </span>
-					</th>
-					<th>
-						<span class="flex items-center w-full gap-1/2"> Nombre del producto </span>
-					</th>
-					<th>
-						<span class="flex items-center w-full gap-1/2"> Descripción <app-alert-circle /> </span>
-					</th>
-					<th>
-						<span class="flex items-center w-full gap-1/2">
-							Fecha de liberación <app-alert-circle />
-						</span>
-					</th>
-					<th>
-						<span class="flex items-center w-full gap-1/2">
-							Fecha de reestructuración <app-alert-circle />
-						</span>
-					</th>
-					<th></th>
+					@for (header of productHeaders(); track $index) {
+						<th>
+							<section class="flex items-center w-full gap-1/2 cursor-default">
+								{{ header.title }}
+								@if (header.tooltip) {
+									<span class="tooltip-container">
+										<app-alert-circle class="cursor-pointer" [appTooltip]="tooltip" />
+										<app-tooltip #tooltip [text]="header.description ?? ''" />
+									</span>
+								}
+							</section>
+						</th>
+					}
 				</tr>
 			</thead>
 			<tbody>

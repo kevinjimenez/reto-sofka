@@ -9,3 +9,4 @@ export { ButtonComponent } from './button/button.component';
 export { InputComponent } from './input/input.component';
 export { LogoComponent } from './logo/logo.component';
 export { ToastComponent } from './toast/toast.component';
+export { TooltipComponent } from './tooltip/tooltip.component';

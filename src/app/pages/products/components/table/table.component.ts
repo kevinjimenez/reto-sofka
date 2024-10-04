@@ -1,9 +1,9 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CONTEXT_MENU_OPTIONS } from '../../../../common/constants';
 import { MENU_OPTIONS } from '../../../../common/enums';
-import { Product } from '../../../../common/interfaces';
+import { Product, TableHeaderInterface } from '../../../../common/interfaces';
 import { ProductsService } from '../../../../core';
 import {
 	AlertCircleComponent,
@@ -14,8 +14,11 @@ import {
 	IconButtonComponent,
 	LogoComponent,
 	OverlayComponent,
-	ToastComponent
+	ToastComponent,
+	TooltipComponent
 } from '../../../../shared/components';
+import { TooltipDirective } from '../../../../shared/directives';
+import { PRODUCT_TABLE_HEADERS } from '../../../../common/constants/table-headers';
 
 @Component({
 	selector: 'app-table',
@@ -28,7 +31,9 @@ import {
 		ContextMenuComponent,
 		ButtonComponent,
 		FormsModule,
-		ToastComponent
+		ToastComponent,
+		TooltipComponent,
+		TooltipDirective
 	],
 	templateUrl: './table.component.html',
 	styleUrl: './table.component.css'
@@ -40,10 +45,12 @@ export class TableComponent {
 	public contextMenuVisible = signal<boolean>(false);
 	public contextMenuX = signal<number>(0);
 	public contextMenuY = signal<number>(0);
-	public contextMenuOptions = signal<ContextMenuOption[]>(CONTEXT_MENU_OPTIONS);
 	public itemSelected = signal<Product | null>(null);
 	public toastVisible = signal<boolean>(false);
 	public errorMsg = signal<string>('');
+
+	public contextMenuOptions = computed(() => CONTEXT_MENU_OPTIONS);
+	public productHeaders = computed(() => PRODUCT_TABLE_HEADERS);
 
 	public selectedValue: string = '5';
 
