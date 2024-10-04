@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TooltipComponent should match snapshot 1`] = `
+<div
+  id="root1"
+>
+  <main
+    class="tooltip-content"
+  >
+     
+
+  </main>
+</div>
+`;
