@@ -1,6 +1,7 @@
 module.exports = {
   cache: false,
   maxWorkers: 2,
+  verbose: true,
   clearMocks: true,
   preset: 'jest-preset-angular',
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
@@ -24,10 +25,10 @@ module.exports = {
   coverageDirectory: '<rootDir>/coverage', // Especifica el directorio donde se guardarán los reportes de cobertura
   coverageThreshold: {
     global: {
-      lines: 90,
-      statements: 90,
-      branches: 90,
-      functions: 90,
+      lines: 95,
+      statements: 95,
+      branches: 95,
+      functions: 95,
     },
   },
 };

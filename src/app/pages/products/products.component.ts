@@ -58,7 +58,6 @@ export class ProductsComponent implements OnInit {
 
 	private filterProducts(): void {
 		this.fieldSearch.valueChanges.pipe(debounceTime(500)).subscribe((search: string) => {
-			console.log(search);
 			const products = this.originalProducts().slice(0, this.take());
 
 			if (!search && search === '') {

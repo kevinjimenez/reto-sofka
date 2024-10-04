@@ -10,13 +10,9 @@ export class CustomValiationForm {
 		errors: Record<string, string | ErrorInputInterface>,
 		label?: string
 	): string | null {
-		console.log(errors);
-
 		for (const key in errors) {
-			console.log(key);
 			if (Object.hasOwn(errors, key)) {
 				const msg = ERROR_INPUT_MESSAGE[key];
-				console.log(errors[key], typeof errors[key]);
 
 				if (typeof errors[key] === 'object' && label) {
 					const requiredLength = errors[key].requiredLength;
