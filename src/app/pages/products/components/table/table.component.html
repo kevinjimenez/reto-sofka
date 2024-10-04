@@ -57,11 +57,11 @@
 		</table>
 	</div>
 	<footer class="table-footer">
-		<span>{{ products().length }} Resultados</span>
+		<span>{{ totalProducts() }} de {{ total() }} Resultados</span>
 		<select [(ngModel)]="selectedValue" (change)="onSelectionChange(selectedValue)">
-			<option value="5">5</option>
-			<option value="10">10</option>
-			<option value="15">15</option>
+			@for (range of paginator().range; track $index) {
+				<option [value]="range">{{ range }}</option>
+			}
 		</select>
 	</footer>
 </section>

@@ -1,7 +1,11 @@
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CONTEXT_MENU_OPTIONS, PRODUCT_TABLE_HEADERS } from '../../../../common/constants';
+import {
+	CONTEXT_MENU_OPTIONS,
+	PAGINATOR,
+	PRODUCT_TABLE_HEADERS
+} from '../../../../common/constants';
 import { MENU_OPTIONS } from '../../../../common/enums';
 import { Product } from '../../../../common/interfaces';
 import { ProductsService } from '../../../../core';
@@ -47,12 +51,15 @@ export class TableComponent {
 	public toastVisible = signal<boolean>(false);
 	public errorMsg = signal<string>('');
 
+	public paginator = computed(() => PAGINATOR);
 	public contextMenuOptions = computed(() => CONTEXT_MENU_OPTIONS);
 	public productHeaders = computed(() => PRODUCT_TABLE_HEADERS);
 
-	public selectedValue: string = '5';
+	public selectedValue: string = this.paginator().default;
 
 	public products = input<Product[]>([]);
+	public total = input<number>(0);
+	public totalProducts = computed(() => this.products().length);
 
 	public onViewItems = output<number>();
 	public onRemoveItem = output<string>();

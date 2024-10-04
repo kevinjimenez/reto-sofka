@@ -1,10 +1,11 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime } from 'rxjs';
 import { Product } from '../../common/interfaces';
 import { ButtonComponent, InputComponent } from '../../shared/components';
 import { TableComponent } from './components/table/table.component';
+import { PAGINATOR } from '../../common/constants';
 
 @Component({
 	selector: 'app-products',
@@ -20,8 +21,9 @@ export class ProductsComponent implements OnInit {
 	public fieldSearch = new FormControl();
 
 	public originalProducts = signal<Product[]>([]);
+	public total = computed(() => this.originalProducts().length);
 	public cloneProducts = signal<Product[]>([]);
-	public take = signal<number>(5);
+	public take = signal<number>(Number(PAGINATOR.default));
 
 	constructor() {
 		this.filterProducts();
@@ -56,12 +58,15 @@ export class ProductsComponent implements OnInit {
 
 	private filterProducts(): void {
 		this.fieldSearch.valueChanges.pipe(debounceTime(500)).subscribe((search: string) => {
+			console.log(search);
+			const products = this.originalProducts().slice(0, this.take());
+
 			if (!search && search === '') {
-				this.cloneProducts.set(this.originalProducts().slice(0, this.take()));
+				this.cloneProducts.set(products);
 				return;
 			}
 
-			const newCloneProducts = this.cloneProducts().filter((product) => {
+			const newCloneProducts = products.filter((product) => {
 				return product.name.includes(search);
 			});
 			this.cloneProducts.set(newCloneProducts);

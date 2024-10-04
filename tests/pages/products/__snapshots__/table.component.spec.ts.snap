@@ -185,7 +185,7 @@ exports[`TableComponent should match snapshot 1`] = `
       class="table-footer"
     >
       <span>
-        0 Resultados
+        0 de 0 Resultados
       </span>
       <select
         class="ng-untouched ng-pristine ng-valid"
@@ -205,6 +205,7 @@ exports[`TableComponent should match snapshot 1`] = `
         >
           15
         </option>
+        
       </select>
     </footer>
   </section>

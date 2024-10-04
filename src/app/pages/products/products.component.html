@@ -5,6 +5,7 @@
 	</header>
 	<app-table
 		[products]="cloneProducts()"
+		[total]="total()"
 		(onRemoveItem)="onRemoveItem($event)"
 		(onViewItems)="onViewItems($event)"
 	/>

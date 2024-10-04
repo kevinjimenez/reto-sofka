@@ -308,7 +308,7 @@ DebugElement {
             class="table-footer"
           >
             <span>
-              2 Resultados
+              2 de 2 Resultados
             </span>
             <select
               class="ng-untouched ng-pristine ng-valid"
@@ -328,6 +328,7 @@ DebugElement {
               >
                 15
               </option>
+              
             </select>
           </footer>
         </section>
