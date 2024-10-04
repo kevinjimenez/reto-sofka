@@ -10,7 +10,7 @@ export class SpinnerService {
 		this.isLoading.set(true);
 	}
 
-	public hide(time = 250) {
+	public hide(time = 500) {
 		setTimeout(() => {
 			this.isLoading.set(false);
 		}, time);

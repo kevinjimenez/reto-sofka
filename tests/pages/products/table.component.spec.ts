@@ -71,7 +71,7 @@ describe('TableComponent', () => {
 	describe('onDelete', () => {
 		it('should call deleteById and emit onRemoveItem when onDelete is called', () => {
 			component.itemSelected.set(mockProduct);
-			productsServiceMock.deleteById.mockReturnValue(of({ message: 'Product deleted' } as any));
+			productsServiceMock.deleteById.mockReturnValue(of({ message: 'Product deleted' } as unknown));
 			const onRemoveItemSpy = jest.spyOn(component.onRemoveItem, 'emit');
 			component.onDelete();
 

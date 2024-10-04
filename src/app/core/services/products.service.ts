@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { catchError, skip, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { DefaultResponse } from '../../common/interfaces/default-response.interface';
 import { Product } from '../../common/interfaces/product.interface';
@@ -41,7 +41,12 @@ export class ProductsService {
 
 	checkIdAvailable(id: string) {
 		const url = `${environment.apiUrl}/products/verification/${id}`;
-		return this._httpClient.get<boolean>(url).pipe(catchError(this.handleErrorResponse));
+		const headers = new HttpHeaders({
+			skip: 'true'
+		});
+		return this._httpClient
+			.get<boolean>(url, { headers })
+			.pipe(catchError(this.handleErrorResponse));
 	}
 
 	private handleErrorResponse(

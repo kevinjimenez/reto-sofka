@@ -30,7 +30,7 @@ describe('SpinnerService', () => {
 	});
 
 	it('should set isLoading to false after the default delay when hide is called', (done) => {
-		const customDelay = 250;
+		const customDelay = 500;
 		service.show();
 		service.hide();
 		setTimeout(() => {

@@ -39,8 +39,8 @@ describe('CreateEditProductComponent', () => {
 		navigate: jest.fn().mockResolvedValue(true),
 		getCurrentNavigation: jest.fn().mockReturnValue({
 			id: 123,
-			initialUrl: '/' as any,
-			extractedUrl: '/' as any,
+			initialUrl: '/' as unknown,
+			extractedUrl: '/' as unknown,
 			trigger: 'imperative',
 			previousNavigation: null,
 			extras: { state: { payload: null } }
