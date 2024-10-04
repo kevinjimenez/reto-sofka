@@ -21,10 +21,10 @@ export const routes: Routes = [
 		path: '',
 		redirectTo: 'products',
 		pathMatch: 'full'
+	},
+	{
+		path: '**',
+		loadComponent: () =>
+			import('./pages/not-found/not-found.component').then((m) => m.NotFoundComponent)
 	}
-	// {
-	//   path: '**',
-	//   loadComponent: () =>
-	//     import('./pages/not-found/not-found.component').then(m => m.default),
-	// },
 ];

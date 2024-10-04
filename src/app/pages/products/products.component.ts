@@ -24,24 +24,11 @@ export class ProductsComponent implements OnInit {
 	public take = signal<number>(5);
 
 	constructor() {
-		this.fieldSearch.valueChanges.pipe(debounceTime(500)).subscribe((search: string) => {
-			if (!search && search === '') {
-				this.cloneProducts.set(this.originalProducts().slice(0, this.take()));
-				return;
-			}
-
-			const newCloneProducts = this.cloneProducts().filter((product) => {
-				return product.name.includes(search);
-			});
-			this.cloneProducts.set(newCloneProducts);
-		});
+		this.filterProducts();
 	}
 
 	public ngOnInit(): void {
-		this._activatedRoute.data.subscribe(({ products }) => {
-			this.originalProducts.set(products.data);
-			this.cloneProducts.set(products.data.slice(0, this.take()));
-		});
+		this.getRouteParams();
 	}
 
 	public onNewProduct(): void {
@@ -58,5 +45,26 @@ export class ProductsComponent implements OnInit {
 	public onViewItems(value: number): void {
 		this.take.update(() => value);
 		this.cloneProducts.update(() => this.originalProducts().slice(0, value));
+	}
+
+	private getRouteParams(): void {
+		this._activatedRoute.data.subscribe(({ products }) => {
+			this.originalProducts.set(products.data);
+			this.cloneProducts.set(products.data.slice(0, this.take()));
+		});
+	}
+
+	private filterProducts(): void {
+		this.fieldSearch.valueChanges.pipe(debounceTime(500)).subscribe((search: string) => {
+			if (!search && search === '') {
+				this.cloneProducts.set(this.originalProducts().slice(0, this.take()));
+				return;
+			}
+
+			const newCloneProducts = this.cloneProducts().filter((product) => {
+				return product.name.includes(search);
+			});
+			this.cloneProducts.set(newCloneProducts);
+		});
 	}
 }

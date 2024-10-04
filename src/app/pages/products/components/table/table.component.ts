@@ -1,5 +1,10 @@
 import { Component, inject, input, output, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CONTEXT_MENU_OPTIONS } from '../../../../common/constants';
+import { MENU_OPTIONS } from '../../../../common/enums';
+import { Product } from '../../../../common/interfaces';
+import { ProductsService } from '../../../../core';
 import {
 	AlertCircleComponent,
 	ButtonComponent,
@@ -11,11 +16,6 @@ import {
 	OverlayComponent,
 	ToastComponent
 } from '../../../../shared/components';
-import { FormsModule } from '@angular/forms';
-import { ProductsService } from '../../../../core';
-import { Product } from '../../../../common/interfaces';
-import { CONTEXT_MENU_OPTIONS } from '../../../../common/constants';
-import { MENU_OPTIONS } from '../../../../common/enums';
 
 @Component({
 	selector: 'app-table',

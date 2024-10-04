@@ -32,3 +32,7 @@ button {
   color: #0f265c;
   /* background-color: #fdde00; */
 }
+
+.full {
+  width: 100%;
+}

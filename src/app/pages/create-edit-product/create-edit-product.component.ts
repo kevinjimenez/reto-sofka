@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../common/interfaces';
@@ -43,13 +43,7 @@ export class CreateEditProductComponent implements OnInit {
 	);
 
 	constructor() {
-		this._activatedRoute.params.subscribe(({ id }) => {
-			if (id) {
-				this.id.set(id);
-				const navigation = this._router.getCurrentNavigation();
-				this.payloadEdit.set(navigation?.extras.state?.['payload']);
-			}
-		});
+		this.getRouteParams();
 	}
 
 	public ngOnInit(): void {
@@ -58,7 +52,7 @@ export class CreateEditProductComponent implements OnInit {
 		}
 	}
 
-	public setValueForm() {
+	public setValueForm(): void {
 		this.registerForm.controls.id.clearAsyncValidators();
 		this.registerForm.setValue({
 			id: this.payloadEdit()!.id,
@@ -72,55 +66,90 @@ export class CreateEditProductComponent implements OnInit {
 		this.registerForm.controls.id.disable();
 	}
 
-	public onBack() {
+	public onBack(): void {
 		this._router.navigate(['/products']);
 	}
 
-	public onSubmit() {
+	public onSubmit(): void {
 		if (this.registerForm.valid) {
-			const newProduct: Partial<Product> = {
-				id: this.registerForm.value.id!,
-				name: this.registerForm.value.name!,
-				description: this.registerForm.value.description!,
-				logo: this.registerForm.value.logo!,
-				date_release: this.registerForm.value.date_release!,
-				date_revision: this.registerForm.value.date_revision!
-			};
 			if (this.id() && this.payloadEdit()) {
-				const { id, ...updateProduct } = newProduct;
-				this._productsService.updateById(this.id()!, updateProduct).subscribe({
-					next: ({ message }) => {
-						this.errorMsg.set(message);
-						this.toastVisible.set(true);
-					},
-					error: (err) => {
-						this.errorMsg.set(err.error.message);
-						this.toastVisible.set(true);
-					}
-				});
+				const { id, ...updateProduct } = this.productForm;
+				this.updateProduct(this.id()!, updateProduct);
 			} else {
-				this._productsService.create(newProduct as Product).subscribe({
-					next: ({ message }) => {
-						this.errorMsg.set(message);
-						this.toastVisible.set(true);
-						this.onReset();
-					},
-					error: (err) => {
-						this.errorMsg.set(err.error.message);
-						this.toastVisible.set(true);
-					}
-				});
+				this.createProduct(this.productForm as Product);
 			}
 		} else {
 			this.registerForm.markAllAsTouched();
 		}
 	}
 
-	public onReset() {
+	private createProduct(payload: Product): void {
+		this._productsService.create(payload).subscribe({
+			next: ({ message }) => {
+				this.errorMsg.set(message);
+				this.toastVisible.set(true);
+				this.onReset();
+			},
+			error: (err) => {
+				this.errorMsg.set(err.error.message);
+				this.toastVisible.set(true);
+			}
+		});
+	}
+
+	private updateProduct(id: string, payload: Partial<Product>): void {
+		this._productsService.updateById(id, payload).subscribe({
+			next: ({ message }) => {
+				this.errorMsg.set(message);
+				this.toastVisible.set(true);
+			},
+			error: (err) => {
+				this.errorMsg.set(err.error.message);
+				this.toastVisible.set(true);
+			}
+		});
+	}
+
+	public onReset(): void {
 		this.registerForm.reset();
 	}
 
-	public onCancel() {
+	public onCancel(): void {
 		this._router.navigate(['products']);
+	}
+
+	private get productForm(): Partial<Product> {
+		return {
+			id: this.registerForm.value.id!,
+			name: this.registerForm.value.name!,
+			description: this.registerForm.value.description!,
+			logo: this.registerForm.value.logo!,
+			date_release: this.registerForm.value.date_release!,
+			date_revision: this.registerForm.value.date_revision!
+		};
+	}
+
+	private getRouteParams(): void {
+		this._activatedRoute.params.subscribe(({ id }) => {
+			if (id) {
+				this.id.set(id);
+				const navigation = this._router.getCurrentNavigation();
+				if (!navigation?.extras.state?.['payload']) {
+					this._router.navigate(['/products']);
+				}
+				this.payloadEdit.set(navigation?.extras.state?.['payload']);
+			}
+		});
+	}
+
+	@HostListener('window:beforeunload', ['$event'])
+	onBeforeReload(e: BeforeUnloadEvent): void {
+		const isValidRegisterForm = Object.values(this.registerForm.controls).some(
+			(control) => control.value !== ''
+		);
+
+		if (isValidRegisterForm) {
+			e.preventDefault();
+		}
 	}
 }

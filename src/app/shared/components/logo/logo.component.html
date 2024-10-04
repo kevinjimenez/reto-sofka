@@ -1,5 +1,5 @@
 @if (!hasError()) {
 	<img class="logo" [src]="path()" alt="__logo__" onerror="" (error)="setError()" />
 } @else {
-	<div class="logo">LG</div>
+	<img [src]="default() | image: 'icons'" alt="__defautl__" />
 }

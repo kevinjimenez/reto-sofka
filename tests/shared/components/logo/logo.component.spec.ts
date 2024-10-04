@@ -48,7 +48,7 @@ describe('LogoComponent', () => {
 		component.setError();
 		fixture.detectChanges();
 
-		const contend = compiled.querySelector('div');
+		const contend = compiled.querySelector('img');
 		expect(contend).toBeTruthy();
 	});
 });

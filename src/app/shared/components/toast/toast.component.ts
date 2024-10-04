@@ -1,9 +1,10 @@
-import { Component, Input, input, model, OnInit } from '@angular/core';
+import { Component, Input, model } from '@angular/core';
+import { BellRingingComponent } from '../icons/bell-ringing/bell-ringing.component';
 
 @Component({
 	selector: 'app-toast',
 	standalone: true,
-	imports: [],
+	imports: [BellRingingComponent],
 	templateUrl: './toast.component.html',
 	styleUrl: './toast.component.css'
 })

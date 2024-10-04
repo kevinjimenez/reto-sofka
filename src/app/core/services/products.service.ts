@@ -13,7 +13,9 @@ export class ProductsService {
 
 	getAll() {
 		const url = `${environment.apiUrl}/products`;
-		return this._httpClient.get<any>(url).pipe(catchError(this.handleErrorResponse));
+		return this._httpClient
+			.get<DefaultResponse<Product[]>>(url)
+			.pipe(catchError(this.handleErrorResponse));
 	}
 
 	create(payload: Product) {

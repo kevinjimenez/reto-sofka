@@ -13,6 +13,7 @@ export class ButtonComponent {
 	public label = input<string>();
 	public color = input<'primary-brand' | 'second-brand'>('primary-brand');
 	public customClass = input<string>();
+	public isFull = input<boolean>(false);
 	public onClick = output();
 
 	private get buttonColor() {
