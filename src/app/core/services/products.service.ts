@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { Product } from '../../common/interfaces';
 import { HandlerError, MainService } from '../../utils';
 
@@ -16,7 +15,7 @@ export class ProductsService extends MainService<Product> {
 	}
 
 	checkIdAvailable(id: string) {
-		const url = `${environment.apiUrl}/products/verification/${id}`;
+		const url = `${this.baseUrl}/products/verification/${id}`;
 		const headers = new HttpHeaders({
 			skip: 'true'
 		});

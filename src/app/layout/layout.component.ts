@@ -5,7 +5,10 @@ import { RouterOutlet } from '@angular/router';
 	selector: 'app-layout',
 	standalone: true,
 	imports: [RouterOutlet],
-	templateUrl: './layout.component.html',
-	styleUrl: './layout.component.css'
+	template: `
+		<main>
+			<router-outlet />
+		</main>
+	`
 })
 export class LayoutComponent {}

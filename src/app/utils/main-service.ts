@@ -6,7 +6,7 @@ import { MainServiceInterface } from '../common/interfaces/main-service.interfac
 import { HandlerError } from './handler-error';
 
 export abstract class MainService<R> implements MainServiceInterface<R> {
-	private baseUrl = `${environment.apiUrl}`;
+	protected baseUrl = `${environment.apiUrl}`;
 	constructor(
 		public http: HttpClient,
 		public segment: string
