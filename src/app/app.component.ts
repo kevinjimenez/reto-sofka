@@ -6,7 +6,11 @@ import { SpinnerComponent } from './shared/components';
 	selector: 'app-root',
 	standalone: true,
 	imports: [RouterOutlet, SpinnerComponent],
-	templateUrl: './app.component.html',
-	styleUrl: './app.component.css'
+	template: `
+		<main>
+			<router-outlet />
+		</main>
+		<app-spinner />
+	`
 })
 export class AppComponent {}
