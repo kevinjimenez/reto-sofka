@@ -10,7 +10,7 @@ import { HandlerError } from '../../utils';
 	providedIn: 'root'
 })
 export class ProductsService {
-	private baseUrl = environment.apiUrl;
+	private readonly baseUrl = environment.apiUrl;
 
 	private readonly _httpClient = inject(HttpClient);
 

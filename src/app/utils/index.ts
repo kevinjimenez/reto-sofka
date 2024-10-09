@@ -1,2 +1,2 @@
 export { CustomValiationForm } from './custom-validation-form';
-export { HandlerError } from './handle-error';
+export { HandlerError } from './handler-error';
