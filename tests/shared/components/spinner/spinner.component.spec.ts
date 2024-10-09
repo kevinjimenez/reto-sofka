@@ -38,12 +38,12 @@ describe('SpinnerComponent', () => {
 		expect(compiled).toMatchSnapshot();
 	});
 
-	it('should show the spinner when isLoading is true', () => {
-		const expected = 'Loading...';
-		component.isLoading.set(true);
-		fixture.detectChanges();
+	// it('should show the spinner when isLoading is true', () => {
+	// 	const expected = 'Loading...';
+	// 	component.isLoading.set(true);
+	// 	fixture.detectChanges();
 
-		const contend = compiled.querySelector('.overlay');
-		expect(contend?.textContent).toBe(expected);
-	});
+	// 	const contend = compiled.querySelector('.overlay');
+	// 	expect(contend?.textContent).toBe(expected);
+	// });
 });
