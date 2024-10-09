@@ -1,10 +1,11 @@
-import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, OnInit, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../common/interfaces';
 import { ProductsService } from '../../core';
 import { ButtonComponent, InputComponent, ToastComponent } from '../../shared/components';
 import { CustomValiationForm } from '../../utils';
+import { ProductsStore } from '../../store/product.store';
 
 @Component({
 	selector: 'app-create-edit-product',
@@ -18,16 +19,17 @@ export class CreateEditProductComponent implements OnInit {
 	private readonly _productsService = inject(ProductsService);
 	private readonly _router = inject(Router);
 	private readonly _activatedRoute = inject(ActivatedRoute);
+	readonly productsStore = inject(ProductsStore);
 
-	public payloadEdit = signal<Product | null>(null);
-	public id = signal<string | null>(null);
 	public toastVisible = signal<boolean>(false);
 	public errorMsg = signal<string>('');
+
+	public selectedProduct = computed(() => this.productsStore.product());
 
 	public registerForm = this.formBuilder.group(
 		{
 			id: [
-				this.payloadEdit()?.id ?? '',
+				this.selectedProduct()?.id ?? '',
 				[Validators.required, Validators.minLength(3), Validators.maxLength(10)],
 				[CustomValiationForm.availableIdValidator(this._productsService)]
 			],
@@ -46,21 +48,17 @@ export class CreateEditProductComponent implements OnInit {
 		this.getRouteParams();
 	}
 
-	public ngOnInit(): void {
-		if (this.payloadEdit()) {
-			this.setValueForm();
-		}
-	}
+	public ngOnInit(): void {}
 
 	public setValueForm(): void {
 		this.registerForm.controls.id.clearAsyncValidators();
 		this.registerForm.setValue({
-			id: this.payloadEdit()!.id,
-			name: this.payloadEdit()!.name,
-			description: this.payloadEdit()!.description,
-			logo: this.payloadEdit()!.logo,
-			date_release: this.payloadEdit()!.date_release,
-			date_revision: this.payloadEdit()!.date_revision
+			id: this.selectedProduct()!.id,
+			name: this.selectedProduct()!.name,
+			description: this.selectedProduct()!.description,
+			logo: this.selectedProduct()!.logo,
+			date_release: this.selectedProduct()!.date_release,
+			date_revision: this.selectedProduct()!.date_revision
 		});
 
 		this.registerForm.controls.id.disable();
@@ -72,9 +70,9 @@ export class CreateEditProductComponent implements OnInit {
 
 	public onSubmit(): void {
 		if (this.registerForm.valid) {
-			if (this.id() && this.payloadEdit()) {
+			if (this.selectedProduct()) {
 				const { id, ...updateProduct } = this.productForm;
-				this.updateProduct(this.id()!, updateProduct);
+				this.updateProduct(this.selectedProduct()!.id, updateProduct);
 			} else {
 				this.createProduct(this.productForm as Product);
 			}
@@ -132,12 +130,11 @@ export class CreateEditProductComponent implements OnInit {
 	private getRouteParams(): void {
 		this._activatedRoute.params.subscribe(({ id }) => {
 			if (id) {
-				this.id.set(id);
-				const navigation = this._router.getCurrentNavigation();
-				if (!navigation?.extras.state?.['payload']) {
+				if (!this.selectedProduct()) {
 					this._router.navigate(['/products']);
+				} else {
+					this.setValueForm();
 				}
-				this.payloadEdit.set(navigation?.extras.state?.['payload']);
 			}
 		});
 	}

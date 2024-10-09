@@ -21,6 +21,7 @@ import {
 	TooltipComponent
 } from '../../../../shared/components';
 import { TooltipDirective } from '../../../../shared/directives';
+import { ProductsStore } from '../../../../store/product.store';
 
 @Component({
 	selector: 'app-table',
@@ -42,6 +43,8 @@ import { TooltipDirective } from '../../../../shared/directives';
 })
 export class TableComponent {
 	private readonly _productsService = inject(ProductsService);
+	private readonly _router = inject(Router);
+	readonly productsStore = inject(ProductsStore);
 
 	public overlayVisible = signal<boolean>(false);
 	public contextMenuVisible = signal<boolean>(false);
@@ -54,17 +57,12 @@ export class TableComponent {
 	public paginator = computed(() => PAGINATOR);
 	public contextMenuOptions = computed(() => CONTEXT_MENU_OPTIONS);
 	public productHeaders = computed(() => PRODUCT_TABLE_HEADERS);
+	public totalProductsView = computed(() => this.productsStore.products().length);
+	public totalProducts = computed(() => this.productsStore.productsCount());
 
 	public selectedValue: string = this.paginator().default;
 
-	public products = input<Product[]>([]);
-	public total = input<number>(0);
-	public totalProducts = computed(() => this.products().length);
-
-	public onViewItems = output<number>();
 	public onRemoveItem = output<string>();
-
-	private readonly _router = inject(Router);
 
 	public showOverlay() {
 		this.overlayVisible.update(() => true);
@@ -73,7 +71,8 @@ export class TableComponent {
 	public showContextMenu(event: MouseEvent, item: Product) {
 		this.contextMenuX.set(event.clientX);
 		this.contextMenuY.set(event.clientY);
-		this.itemSelected.set(item);
+		this.productsStore.setSelectedProduct(item);
+		// this.itemSelected.set(item);
 		this.contextMenuVisible.update((state) => !state);
 	}
 
@@ -86,16 +85,19 @@ export class TableComponent {
 		// update
 		if (optionSelected.option === MENU_OPTIONS.UPDATE) {
 			this.showOverlay();
-			this._router.navigate(['products', 'product', this.itemSelected()?.id], {
-				state: { payload: this.itemSelected() }
+
+			const id = this.productsStore.selectedProduct()?.id;
+			this._router.navigate(['products', 'product', id], {
+				// state: { payload: this.itemSelected() }
 			});
 		}
 	}
 
 	public onDelete() {
-		this._productsService.deleteById(this.itemSelected()?.id || '').subscribe({
+		const id = this.productsStore.product()?.id ?? '';
+		this._productsService.deleteById(id).subscribe({
 			next: ({ message }) => {
-				this.onRemoveItem.emit(this.itemSelected()!.id);
+				this.productsStore.remove();
 				this.overlayVisible.set(false);
 				this.errorMsg.set(message);
 				this.toastVisible.set(true);
@@ -108,6 +110,7 @@ export class TableComponent {
 	}
 
 	public onSelectionChange(value: string) {
-		this.onViewItems.emit(parseInt(value));
+		const limit = parseInt(value);
+		this.productsStore.loadAllByLimit(limit);
 	}
 }

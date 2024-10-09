@@ -1,7 +1,9 @@
 <app-toast [(isShow)]="toastVisible" [text]="errorMsg()" />
 
 <main class="w-auto md:w-full flex justify-center items-center flex-col p-inline-2 md:p-inline-0">
-	<h1 class="auto-adjust-text">Formulario de {{ this.id() ? 'actualización' : 'registro' }}</h1>
+	<h1 class="auto-adjust-text">
+		Formulario de {{ this.productsStore.product()?.id ? 'actualización' : 'registro' }}
+	</h1>
 	<hr class="w-full md:w-1/2" />
 	<form
 		[formGroup]="registerForm"
@@ -46,8 +48,8 @@
 		<app-button
 			class="w-full md:w-auto"
 			[isFull]="true"
-			[label]="this.id() ? 'Cancelar' : 'Reiniciar'"
-			(onClick)="this.id() ? onCancel() : onReset()"
+			[label]="this.productsStore.product()?.id ? 'Cancelar' : 'Reiniciar'"
+			(onClick)="this.productsStore.product()?.id ? onCancel() : onReset()"
 		/>
 		<app-button
 			class="w-full md:w-auto"

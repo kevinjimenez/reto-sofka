@@ -1,11 +1,12 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime } from 'rxjs';
+import { Router } from '@angular/router';
+import { PAGINATOR } from '../../common/constants';
 import { Product } from '../../common/interfaces';
 import { ButtonComponent, InputComponent } from '../../shared/components';
+import { ProductsStore } from '../../store/product.store';
 import { TableComponent } from './components/table/table.component';
-import { PAGINATOR } from '../../common/constants';
+import { debounceTime } from 'rxjs';
 
 @Component({
 	selector: 'app-products',
@@ -16,21 +17,19 @@ import { PAGINATOR } from '../../common/constants';
 })
 export class ProductsComponent implements OnInit {
 	private readonly _router = inject(Router);
-	private readonly _activatedRoute = inject(ActivatedRoute);
+	readonly productsStore = inject(ProductsStore);
 
 	public fieldSearch = new FormControl();
 
 	public originalProducts = signal<Product[]>([]);
-	public total = computed(() => this.originalProducts().length);
 	public cloneProducts = signal<Product[]>([]);
-	public take = signal<number>(Number(PAGINATOR.default));
 
 	constructor() {
 		this.filterProducts();
 	}
 
 	public ngOnInit(): void {
-		this.getRouteParams();
+		this.productsStore.loadAllByLimit(Number(PAGINATOR.default));
 	}
 
 	public onNewProduct(): void {
@@ -44,31 +43,9 @@ export class ProductsComponent implements OnInit {
 		this.originalProducts.update(() => newOriginalProducts);
 	}
 
-	public onViewItems(value: number): void {
-		this.take.update(() => value);
-		this.cloneProducts.update(() => this.originalProducts().slice(0, value));
-	}
-
-	private getRouteParams(): void {
-		this._activatedRoute.data.subscribe(({ products }) => {
-			this.originalProducts.set(products.data);
-			this.cloneProducts.set(products.data.slice(0, this.take()));
-		});
-	}
-
 	private filterProducts(): void {
 		this.fieldSearch.valueChanges.pipe(debounceTime(500)).subscribe((search: string) => {
-			const products = this.originalProducts().slice(0, this.take());
-
-			if (!search && search === '') {
-				this.cloneProducts.set(products);
-				return;
-			}
-
-			const newCloneProducts = products.filter((product) => {
-				return product.name.includes(search);
-			});
-			this.cloneProducts.set(newCloneProducts);
+			this.productsStore.loadAllByQuery(search);
 		});
 	}
 }

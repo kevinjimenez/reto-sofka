@@ -3,10 +3,5 @@
 		<app-input [control]="fieldSearch" />
 		<app-button label="Agregar" (onClick)="onNewProduct()" color="second-brand" />
 	</header>
-	<app-table
-		[products]="cloneProducts()"
-		[total]="total()"
-		(onRemoveItem)="onRemoveItem($event)"
-		(onViewItems)="onViewItems($event)"
-	/>
+	<app-table (onRemoveItem)="onRemoveItem($event)" />
 </main>

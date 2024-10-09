@@ -20,8 +20,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				@if (products().length > 0) {
-					@for (product of products(); track $index) {
+				@if (productsStore.products().length > 0) {
+					@for (product of productsStore.products(); track product.id) {
 						<tr>
 							<td>
 								<span class="flex justify-center items-center w-full">
@@ -57,7 +57,7 @@
 		</table>
 	</div>
 	<footer class="table-footer">
-		<span>{{ totalProducts() }} de {{ total() }} Resultados</span>
+		<span>{{ totalProductsView() }} de {{ totalProducts() }} Resultados</span>
 		<select [(ngModel)]="selectedValue" (change)="onSelectionChange(selectedValue)">
 			@for (range of paginator().range; track $index) {
 				<option [value]="range">{{ range }}</option>
