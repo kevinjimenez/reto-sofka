@@ -1,4 +1,13 @@
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import {
+	Component,
+	computed,
+	inject,
+	input,
+	OnDestroy,
+	OnInit,
+	output,
+	signal
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -8,7 +17,7 @@ import {
 } from '../../../../common/constants';
 import { MENU_OPTIONS } from '../../../../common/enums';
 import { Product } from '../../../../common/interfaces';
-import { ProductsService } from '../../../../core';
+import { ProductsService, StoreService } from '../../../../core';
 import {
 	AlertCircleComponent,
 	ButtonComponent,
@@ -21,6 +30,7 @@ import {
 	TooltipComponent
 } from '../../../../shared/components';
 import { TooltipDirective } from '../../../../shared/directives';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-table',
@@ -40,7 +50,7 @@ import { TooltipDirective } from '../../../../shared/directives';
 	templateUrl: './table.component.html',
 	styleUrl: './table.component.css'
 })
-export class TableComponent {
+export class TableComponent implements OnInit, OnDestroy {
 	private readonly _productsService = inject(ProductsService);
 
 	public overlayVisible = signal<boolean>(false);
@@ -65,6 +75,17 @@ export class TableComponent {
 	public onRemoveItem = output<string>();
 
 	private readonly _router = inject(Router);
+	private readonly _storeService = inject(StoreService);
+
+	private mySubscriptions: Subscription[] = [];
+
+	ngOnInit(): void {
+		const storeSubscription = this._storeService.store.subscribe((store) => {
+			console.log({ store });
+		});
+
+		this.mySubscriptions.push(storeSubscription);
+	}
 
 	public showOverlay() {
 		this.overlayVisible.update(() => true);
@@ -109,5 +130,9 @@ export class TableComponent {
 
 	public onSelectionChange(value: string) {
 		this.onViewItems.emit(parseInt(value));
+	}
+
+	ngOnDestroy(): void {
+		this.mySubscriptions.forEach((subscription) => subscription.unsubscribe());
 	}
 }

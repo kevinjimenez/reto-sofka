@@ -6,6 +6,7 @@ import { Product } from '../../common/interfaces';
 import { ButtonComponent, InputComponent } from '../../shared/components';
 import { TableComponent } from './components/table/table.component';
 import { PAGINATOR } from '../../common/constants';
+import { StoreService } from '../../core';
 
 @Component({
 	selector: 'app-products',
@@ -17,6 +18,7 @@ import { PAGINATOR } from '../../common/constants';
 export class ProductsComponent implements OnInit {
 	private readonly _router = inject(Router);
 	private readonly _activatedRoute = inject(ActivatedRoute);
+	private readonly _storeService = inject(StoreService);
 
 	public fieldSearch = new FormControl();
 
@@ -51,6 +53,9 @@ export class ProductsComponent implements OnInit {
 
 	private getRouteParams(): void {
 		this._activatedRoute.data.subscribe(({ products }) => {
+			// use observer pattern
+			this._storeService.products = products.data;
+			//
 			this.originalProducts.set(products.data);
 			this.cloneProducts.set(products.data.slice(0, this.take()));
 		});
