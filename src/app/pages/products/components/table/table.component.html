@@ -57,7 +57,7 @@
 		</table>
 	</div>
 	<footer class="table-footer">
-		<span>{{ totalProducts() }} de {{ total() }} Resultados</span>
+		<span>Mostrando {{ selectedValue }} de {{ total() }} Resultados</span>
 		<select [(ngModel)]="selectedValue" (change)="onSelectionChange(selectedValue)">
 			@for (range of paginator().range; track $index) {
 				<option [value]="range">{{ range }}</option>

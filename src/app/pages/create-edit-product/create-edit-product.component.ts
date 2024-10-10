@@ -35,7 +35,7 @@ export class CreateEditProductComponent implements OnInit {
 			description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
 			logo: ['', Validators.required],
 			date_release: ['', [Validators.required, CustomValiationForm.currentDateValidator]],
-			date_revision: [{ value: '', disabled: true }, Validators.required]
+			date_revision: [{ value: '', disabled: true }, [Validators.required]]
 		},
 		{
 			validators: [CustomValiationForm.oneYearAfterReleaseValidator]

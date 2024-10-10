@@ -56,7 +56,7 @@ export class CustomValiationForm {
 		releaseDateControl.valueChanges.subscribe(() => {
 			revisionDateControl.setValue('');
 			revisionDateControl.clearAsyncValidators();
-			revisionDateControl.clearValidators();
+			// revisionDateControl.clearValidators();
 			revisionDateControl.updateValueAndValidity();
 		});
 
